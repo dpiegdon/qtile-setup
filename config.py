@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
+# vim: expandtab tabstop=4 shiftwidth=4 softtabstop=4 colorcolumn=100
 
 import os
 
@@ -355,30 +356,30 @@ layouts = [
     layout.Max(),
 ]
 
-widget_defaults = dict(font='Arial', fontsize=12, padding=2)
+widget_defaults = dict(font='Arial', fontsize=13, padding=2)
 
 screens = [
     Screen(
         top=bar.Bar(
             [
                 MyGroupBox(disable_drag=True,
-                                highlight_method='border',
+                                highlight_method='block',
                                 this_current_screen_border='#cc0000',
-                                this_screen_border='#440000',
-                                other_current_screen_border='#aa0000',
-                                other_screen_border='#440000',
+                                this_screen_border='#446666',
+                                other_current_screen_border='#cc0000',
+                                other_screen_border='#446666',
                                 urgent_alert_method='text',
-                                fontsize=10,
-                                borderwidth=2
+                                fontsize=9,
+                                borderwidth=1
                                ),
 #               widget.CurrentLayout(foreground='8b6840'),
                 MyWindowName(foreground='#c0c0c0', for_current_screen=True),
 #               widget.CurrentScreen(),
-                widget.Prompt(foreground='#ff0000'),
+                widget.Prompt(foreground='#44ff44'),
                 widget.Clock(format='%Y-%m-%d %a %H:%M'),
                 widget.Systray(icon_size=12),
             ],
-            19,
+            18,
         ),
     ),
 ]
