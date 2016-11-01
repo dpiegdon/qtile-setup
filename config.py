@@ -325,7 +325,7 @@ keys = [
 # map function keys to special_keys script
 for _modifier in [ ("", "NONE"),
                    ("shift", "SHIFT"),
-                   ("control", "CONTROL"),
+                   ("control", "CTRL"),
                    ("mod1", "ALT"),
                    ("mod5", "MODESWITCH") ]:
     for _fkey in range(1,11):
