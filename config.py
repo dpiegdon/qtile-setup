@@ -2,7 +2,7 @@
 # coding: utf-8
 # vim: expandtab tabstop=4 shiftwidth=4 softtabstop=4 colorcolumn=100
 
-import os
+import socket
 
 from libqtile import layout, widget, bar, hook
 from libqtile.widget import base
@@ -358,31 +358,42 @@ layouts = [
 
 widget_defaults = dict(font='Arial', fontsize=13, padding=2)
 
-screens = [
-    Screen(
-        top=bar.Bar(
-            [
-                MyGroupBox(disable_drag=True,
-                                highlight_method='block',
-                                this_current_screen_border='#cc0000',
-                                this_screen_border='#446666',
-                                other_current_screen_border='#cc0000',
-                                other_screen_border='#446666',
-                                urgent_alert_method='text',
-                                fontsize=9,
-                                borderwidth=1
+def init_widgets():
+    widgets = [
+            MyGroupBox(disable_drag=True,
+                        highlight_method='block',
+                        this_current_screen_border='#cc0000',
+                        this_screen_border='#446666',
+                        other_current_screen_border='#cc0000',
+                        other_screen_border='#446666',
+                        urgent_alert_method='text',
+                        fontsize=9,
+                        borderwidth=1
+                       ),
+#           widget.CurrentLayout(foreground='8b6840'),
+            MyWindowName(foreground='#c0c0c0', for_current_screen=True),
+#           widget.CurrentScreen(),
+            widget.Prompt(foreground='#44ff44'),
+        ]
+    if "proton" == socket.gethostname():
+        widgets += [
+                widget.Battery(battery_name='BATC',
+                                foreground='#00aaaa',
+                                charge_char='+',
+                                discharge_char='–',
+                                energy_full_file='charge_full',
+                                energy_now_file='charge_now',
+                                format='{char}{percent:2.0%} {hour:d}:{min:02d} ',
+                                power_now_file='current_now'
                                ),
-#               widget.CurrentLayout(foreground='8b6840'),
-                MyWindowName(foreground='#c0c0c0', for_current_screen=True),
-#               widget.CurrentScreen(),
-                widget.Prompt(foreground='#44ff44'),
-                widget.Clock(format='%Y-%m-%d %a %H:%M'),
-                widget.Systray(icon_size=12),
-            ],
-            18,
-        ),
-    ),
-]
+            ]
+    widgets += [
+            widget.Clock(format='%Y-%m-%d %a %H:%M'),
+            widget.Systray(icon_size=12),
+        ]
+    return widgets
+
+screens = [ Screen(top=bar.Bar(init_widgets(), 18)) ]
 
 dgroups_key_binder = None
 dgroups_app_rules = []
