@@ -400,7 +400,7 @@ dgroups_app_rules = []
 main = None
 follow_mouse_focus = True
 bring_front_click = True
-cursor_warp = True
+cursor_warp = False
 floating_layout = layout.Floating(border_focus="#0000ff", border_normal="#333366")
 auto_fullscreen = True
 focus_on_window_activation = "smart"
