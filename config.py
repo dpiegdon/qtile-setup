@@ -253,6 +253,24 @@ class MyWindowName(base._TextBox):
 
 
 
+
+class MyPrompt(widget.Prompt):
+    def __init__(self, name="prompt", **config):
+        widget.Prompt.__init__(self, name, **config)
+
+    def _highlight_text(self, text):
+        if self.show_cursor:
+            text = '<span foreground="{0}" background="{1}">{2}</span>'.format('#000000', '#ff0000', text)
+        else:
+            text = '<span foreground="{0}" background="{1}">{2}</span>'.format('#ff0000', '#000000', text)
+        return text
+
+
+
+
+
+
+
 def move_window_to_screen(screen):
     def cmd(qtile):
         w = qtile.currentWindow
@@ -373,10 +391,11 @@ def init_widgets():
 #           widget.CurrentLayout(foreground='8b6840'),
             MyWindowName(foreground='#c0c0c0', for_current_screen=True),
 #           widget.CurrentScreen(),
-            widget.Prompt(foreground='#44ff44',
+            MyPrompt(foreground='#44ff44',
                           cursor_color='#ff4444',
                           bell_style='visual',
                           visual_bell_time=0.1,
+                          font="DejaVu Sans Mono",
                          ),
         ]
     if "proton" == socket.gethostname():
