@@ -361,28 +361,32 @@ widget_defaults = dict(font='Arial', fontsize=13, padding=2)
 def init_widgets():
     widgets = [
             MyGroupBox(disable_drag=True,
-                        highlight_method='block',
-                        this_current_screen_border='#cc0000',
-                        this_screen_border='#446666',
-                        other_current_screen_border='#cc0000',
-                        other_screen_border='#446666',
-                        urgent_alert_method='text',
-                        fontsize=9,
-                        borderwidth=1
-                       ),
+                       highlight_method='block',
+                       this_current_screen_border='#cc0000',
+                       this_screen_border='#446666',
+                       other_current_screen_border='#cc0000',
+                       other_screen_border='#446666',
+                       urgent_alert_method='text',
+                       fontsize=9,
+                       borderwidth=1,
+                      ),
 #           widget.CurrentLayout(foreground='8b6840'),
             MyWindowName(foreground='#c0c0c0', for_current_screen=True),
 #           widget.CurrentScreen(),
-            widget.Prompt(foreground='#44ff44'),
+            widget.Prompt(foreground='#44ff44',
+                          cursor_color='#ff4444',
+                          bell_style='visual',
+                          visual_bell_time=0.1,
+                         ),
         ]
     if "proton" == socket.gethostname():
         widgets += [
                 widget.Battery(battery_name='BATC',
-                                foreground='#00aaaa',
-                                charge_char='+',
-                                discharge_char='–',
-                                format='{char}{percent:2.0%} {hour:d}:{min:02d} ',
-                               ),
+                               foreground='#00aaaa',
+                               charge_char='+',
+                               discharge_char='–',
+                               format='{char}{percent:2.0%} {hour:d}:{min:02d} ',
+                              ),
             ]
     widgets += [
             widget.Clock(format='%Y-%m-%d %a %H:%M'),
