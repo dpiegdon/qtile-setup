@@ -381,10 +381,7 @@ def init_widgets():
                                 foreground='#00aaaa',
                                 charge_char='+',
                                 discharge_char='–',
-                                energy_full_file='charge_full',
-                                energy_now_file='charge_now',
                                 format='{char}{percent:2.0%} {hour:d}:{min:02d} ',
-                                power_now_file='current_now'
                                ),
             ]
     widgets += [
