@@ -11,6 +11,51 @@ from libqtile.manager import Screen, Drag, Click
 from libqtile.command import lazy
 from libqtile.config import Key, Screen, Group, Drag, Click
 
+redTheme = {
+        'focus':       '#ff0000',
+        'blur':        '#008888',
+        'floatfocus':  '#ff8800',
+        'floatblur':   '#004488',
+        'rootwindow':  '#330000',
+        'foreground':  '#cc0000',
+        'semiback':    '#550000',
+        'background':  '#000000',
+        'text':        '#c0c0c0',
+        'textprompt':  '#44ff44',
+        'textbattery': '#00aaaa',
+    }
+
+blueTheme = {
+        'focus':       '#0088ff',
+        'blur':        '#333366',
+        'floatfocus':  '#338888',
+        'floatblur':   '#333366',
+        'rootwindow':  '#001133',
+        'foreground':  '#0066ee',
+        'semiback':    '#003366',
+        'background':  '#000000',
+        'text':        '#c0c0c0',
+        'textprompt':  '#44ff44',
+        'textbattery': '#00aaaa',
+    }
+
+yellowTheme = {
+        'focus':       '#ffee00',
+        'blur':        '#333300',
+        'floatfocus':  '#ff9900',
+        'floatblur':   '#0077ff',
+        'rootwindow':  '#332200',
+        'foreground':  '#ccbb00',
+        'semiback':    '#665f00',
+        'background':  '#000000',
+        'text':        '#c0c0c0',
+        'textprompt':  '#ff8866',
+        'textbattery': '#00aaaa',
+    }
+
+theme = blueTheme
+
+
 
 from libqtile.widget.groupbox import _GroupBase
 
@@ -261,9 +306,9 @@ class MyPrompt(widget.Prompt):
 
     def _highlight_text(self, text):
         if self.show_cursor:
-            text = '<span foreground="{0}" background="{1}">{2}</span>'.format('#000000', '#ff0000', text)
+            text = '<span foreground="{0}" background="{1}">{2}</span>'.format(theme['background'], theme['foreground'], text)
         else:
-            text = '<span foreground="{0}" background="{1}">{2}</span>'.format('#ff0000', '#000000', text)
+            text = '<span foreground="{0}" background="{1}">{2}</span>'.format(theme['foreground'], theme['background'], text)
         return text
 
 
@@ -370,8 +415,8 @@ mouse = [
 
 
 layouts = [
-    layout.MonadTall(border_focus="#ff0000", border_normal="#008888"),
-    layout.Stack(num_stacks=2, border_focus="#00ff00", border_normal="#008888"),
+    layout.MonadTall(border_focus=theme['focus'], border_normal=theme['blur']),
+    layout.Stack(num_stacks=2, border_focus=theme['focus'], border_normal=theme['blur']),
     layout.Max(),
 ]
 
@@ -381,19 +426,19 @@ def init_widgets():
     widgets = [
             MyGroupBox(disable_drag=True,
                        highlight_method='block',
-                       this_current_screen_border='#cc0000',
-                       this_screen_border='#446666',
-                       other_current_screen_border='#cc0000',
-                       other_screen_border='#446666',
+                       this_current_screen_border=theme['foreground'],
+                       this_screen_border=theme['semiback'],
+                       other_current_screen_border=theme['foreground'],
+                       other_screen_border=theme['semiback'],
                        urgent_alert_method='text',
                        fontsize=9,
                        borderwidth=1,
                       ),
 #           widget.CurrentLayout(foreground='8b6840'),
-            MyWindowName(foreground='#c0c0c0', for_current_screen=True),
+            MyWindowName(foreground=theme['text'], for_current_screen=True),
 #           widget.CurrentScreen(),
-            MyPrompt(foreground='#44ff44',
-                          cursor_color='#ff4444',
+            MyPrompt(foreground=theme['textprompt'],
+                          cursor_color=theme['foreground'],
                           bell_style='visual',
                           visual_bell_time=0.1,
                           font="DejaVu Sans Mono",
@@ -402,7 +447,7 @@ def init_widgets():
     if "proton" == socket.gethostname():
         widgets += [
                 widget.Battery(battery_name='BATC',
-                               foreground='#00aaaa',
+                               foreground=theme['textbattery'],
                                charge_char='+',
                                discharge_char='–',
                                format='{char}{percent:2.0%} {hour:d}:{min:02d} ',
@@ -422,7 +467,7 @@ main = None
 follow_mouse_focus = True
 bring_front_click = True
 cursor_warp = False
-floating_layout = layout.Floating(border_focus="#0000ff", border_normal="#333366")
+floating_layout = layout.Floating(border_focus=theme['floatfocus'], border_normal=theme['floatblur'])
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 
@@ -437,5 +482,5 @@ focus_on_window_activation = "smart"
 wmname = "LG3D"
 
 # set root-window background
-call(['xsetroot', '-solid', '#330000'])
+call(['xsetroot', '-solid', theme['rootwindow']])
 
