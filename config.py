@@ -334,12 +334,25 @@ keys = [
     Key([mod], "j", lazy.layout.down()),
     Key([mod], "k", lazy.layout.up()),
     Key([mod], "l", lazy.layout.right()),
+
     Key([mod], "n", lazy.layout.next()),
     Key([mod], "p", lazy.layout.previous()),
-    Key([mod, "shift"], "h", lazy.layout.swap_left()),
+
+
+    Key([mod, "shift"], "h", lazy.layout.shuffle_left()),
     Key([mod, "shift"], "j", lazy.layout.shuffle_down()),
     Key([mod, "shift"], "k", lazy.layout.shuffle_up()),
-    Key([mod, "shift"], "l", lazy.layout.swap_right()),
+    Key([mod, "shift"], "l", lazy.layout.shuffle_right()),
+
+    Key([mod, "control"], "h", lazy.layout.grow_left()),
+    Key([mod, "control"], "j", lazy.layout.grow_down()),
+    Key([mod, "control"], "k", lazy.layout.grow_up()),
+    Key([mod, "control"], "l", lazy.layout.grow_right()),
+
+    Key([mod, "control", "shift"], "h", lazy.layout.swap_left()),
+    Key([mod, "control", "shift"], "j", lazy.layout.swap_down()),
+    Key([mod, "control", "shift"], "k", lazy.layout.swap_up()),
+    Key([mod, "control", "shift"], "l", lazy.layout.swap_right()),
 
     Key([mod], "y", lazy.layout.shrink()),
     Key([mod], "u", lazy.layout.grow()),
@@ -348,8 +361,6 @@ keys = [
 
     Key([mod, "shift"], "space", lazy.layout.flip()),
 
-    Key([mod, "control"], "k", lazy.layout.shuffle_down()),
-    Key([mod, "control"], "j", lazy.layout.shuffle_up()),
 
     # Swap panes of split stack
     Key([mod, "shift"], "n", lazy.layout.rotate()),
@@ -415,9 +426,11 @@ mouse = [
 
 
 layouts = [
-    layout.MonadTall(border_focus=theme['focus'], border_normal=theme['blur']),
-    layout.Stack(num_stacks=2, border_focus=theme['focus'], border_normal=theme['blur']),
-    layout.Max(),
+    layout.Columns(border_focus=theme['focus'], border_normal=theme['blur'], grow_amount=2),
+    #layout.MonadTall(border_focus=theme['focus'], border_normal=theme['blur']),
+    #layout.Tile(ratio=0.5, border_focus=theme['focus'], border_normal=theme['blur']),
+    #layout.Max(),
+    #layout.Floating(border_focus=theme['floatfocus'], border_normal=theme['floatblur']),
 ]
 
 widget_defaults = dict(font='Arial', fontsize=13, padding=2)
