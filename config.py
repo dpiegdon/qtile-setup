@@ -3,6 +3,7 @@
 # vim: expandtab tabstop=4 shiftwidth=4 softtabstop=4 colorcolumn=100
 
 import socket
+from subprocess import call
 
 from libqtile import layout, widget, bar, hook
 from libqtile.widget import base
@@ -434,4 +435,7 @@ focus_on_window_activation = "smart"
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
 wmname = "LG3D"
+
+# set root-window background
+call(['xsetroot', '-solid', '#330000'])
 
