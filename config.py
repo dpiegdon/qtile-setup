@@ -30,7 +30,7 @@ blueTheme = {
         'blur':        '#333366',
         'floatfocus':  '#338888',
         'floatblur':   '#333366',
-        'rootwindow':  '#001133',
+        'rootwindow':  '#002266',
         'foreground':  '#0066ee',
         'semiback':    '#003366',
         'background':  '#000000',
