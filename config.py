@@ -338,6 +338,8 @@ keys = [
     Key([mod], "n", lazy.layout.next()),
     Key([mod], "p", lazy.layout.previous()),
 
+    Key([mod], "Tab", lazy.group.next_window()),
+    Key([mod, "shift"], "Tab", lazy.window.bring_to_front()),
 
     Key([mod, "shift"], "h", lazy.layout.shuffle_left()),
     Key([mod, "shift"], "j", lazy.layout.shuffle_down()),
