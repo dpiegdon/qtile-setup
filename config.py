@@ -395,8 +395,10 @@ keys = [
     Key([mod], "Escape", lazy.spawn("xlock")),
     Key([mod, "control"], "Return", lazy.spawn("/usr/bin/xterm -u8 -e tmux -2 attach")),
 
-    Key([mod], "Left",  lazy.screen.prev_group(skip_managed=True)),
-    Key([mod], "Right", lazy.screen.next_group(skip_managed=True)),
+    Key([mod], "Left",  lazy.screen.prev_group(skip_empty=True, skip_managed=True)),
+    Key([mod], "Right", lazy.screen.next_group(skip_empty=True, skip_managed=True)),
+    Key([mod, "shift"], "Left",  lazy.screen.prev_group(skip_managed=True)),
+    Key([mod, "shift"], "Right", lazy.screen.next_group(skip_managed=True)),
 ]
 
 # map function keys to special_keys script
