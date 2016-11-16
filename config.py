@@ -53,7 +53,7 @@ yellowTheme = {
         'textbattery': '#00aaaa',
     }
 
-theme = blueTheme
+theme = redTheme
 
 
 
