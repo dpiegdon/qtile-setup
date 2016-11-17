@@ -55,268 +55,6 @@ yellowTheme = {
 
 theme = redTheme
 
-
-
-from libqtile.widget.groupbox import _GroupBase
-
-class MyGroupBox(_GroupBase):
-    """A widget that graphically displays the current group"""
-    orientations = base.ORIENTATION_HORIZONTAL
-    defaults = [
-        ("active", "FFFFFF", "Active group font colour"),
-        ("inactive", "404040", "Inactive group font colour"),
-        (
-            "highlight_method",
-            "border",
-            "Method of highlighting ('border', 'block', 'text', or 'line')"
-            "Uses \*_border color settings"
-        ),
-        ("rounded", True, "To round or not to round box borders"),
-        (
-            "this_current_screen_border",
-            "215578",
-            "Border or line colour for group on this screen when focused."
-        ),
-        (
-            "this_screen_border",
-            "215578",
-            "Border or line colour for group on this screen when unfocused."
-        ),
-        (
-            "other_current_screen_border",
-            "215578",
-            "Border or line colour for group on other screen when focused."
-        ),
-        (
-            "other_screen_border",
-            "404040",
-            "Border or line colour for group on other screen."
-        ),
-        (
-            "highlight_color",
-            ["000000", "282828"],
-            "Active group highlight color when using 'line' highlight method."
-        ),
-        (
-            "urgent_alert_method",
-            "border",
-            "Method for alerting you of WM urgent "
-            "hints (one of 'border', 'text', 'block', or 'line')"
-        ),
-        ("urgent_text", "FF0000", "Urgent group font color"),
-        ("urgent_border", "FF0000", "Urgent border or line color"),
-        (
-            "disable_drag",
-            False,
-            "Disable dragging and dropping of group names on widget"
-        ),
-        ("invert_mouse_wheel", False, "Whether to invert mouse wheel group movement"),
-        (
-            "visible_groups",
-            None,
-            "Groups that will be visible "
-            "(if set to None or [], all groups will be visible)"
-        )
-    ]
-
-    def __init__(self, **config):
-        _GroupBase.__init__(self, **config)
-        self.add_defaults(MyGroupBox.defaults)
-        self.clicked = None
-
-    @property
-    def groups(self):
-        return self.qtile.groups if not self.visible_groups else \
-            [g for g in self.qtile.groups if g.name in self.visible_groups]
-
-    def get_clicked_group(self, x, y):
-        group = None
-        new_width = 0
-        width = 0
-        for g in self.groups:
-            new_width += self.box_width([g])
-            if width <= x <= new_width:
-                group = g
-                break
-            width = new_width
-        return group
-
-    def button_press(self, x, y, button):
-        self.clicked = None
-        group = None
-        curGroup = self.qtile.currentGroup
-
-        if button == (5 if not self.invert_mouse_wheel else 4):
-            i = itertools.cycle(self.qtile.groups)
-            while next(i) != curGroup:
-                pass
-            while group is None or group not in self.groups:
-                group = next(i)
-        elif button == (4 if not self.invert_mouse_wheel else 5):
-            i = itertools.cycle(reversed(self.qtile.groups))
-            while next(i) != curGroup:
-                pass
-            while group is None or group not in self.groups:
-                group = next(i)
-        else:
-            group = self.get_clicked_group(x, y)
-            if not self.disable_drag:
-                self.clicked = group
-
-        if group:
-            self.bar.screen.setGroup(group)
-
-    def button_release(self, x, y, button):
-        if button not in (5, 4):
-            group = self.get_clicked_group(x, y)
-            if group and self.clicked:
-                group.cmd_switch_groups(self.clicked.name)
-                self.clicked = None
-
-    def calculate_length(self):
-        width = 0
-        for g in self.groups:
-            width += self.box_width([g])
-        return width
-
-    def group_has_urgent(self, group):
-        return len([w for w in group.windows if w.urgent]) > 0
-
-    def draw(self):
-        self.drawer.clear(self.background or self.bar.background)
-
-        offset = 0
-        for i, g in enumerate(self.groups):
-            to_highlight = False
-            is_block = (self.highlight_method == 'block')
-            is_line = (self.highlight_method == 'line')
-
-            bw = self.box_width([g])
-
-            if self.group_has_urgent(g) and self.urgent_alert_method == "text":
-                text_color = self.urgent_text
-            elif g.windows:
-                text_color = self.active
-            else:
-                text_color = self.inactive
-
-            if g.screen:
-                if self.highlight_method == 'text':
-                    border = self.bar.background
-                    text_color = self.this_current_screen_border
-                else:
-                    if self.bar.screen.group.name == g.name:
-                        if self.qtile.currentScreen == self.bar.screen:
-                            border = self.this_current_screen_border
-                            to_highlight = True
-                        else:
-                            border = self.this_screen_border
-                    else:
-                        if self.qtile.currentScreen == g.screen:
-                            border = self.other_current_screen_border
-                        else:
-                            border = self.other_screen_border
-            elif self.group_has_urgent(g) and \
-                    self.urgent_alert_method in ('border', 'block', 'line'):
-                border = self.urgent_border
-                if self.urgent_alert_method == 'block':
-                    is_block = True
-                elif self.urgent_alert_method == 'line':
-                    is_line = True
-            else:
-                border = self.background or self.bar.background
-
-            self.drawbox(
-                self.margin_x + offset,
-                g.name,
-                border,
-                text_color,
-                highlight_color=self.highlight_color,
-                width=bw - self.margin_x * 2 - self.padding_x * 2,
-                rounded=self.rounded,
-                block=is_block,
-                line=is_line,
-                highlighted=to_highlight
-            )
-            offset += bw
-        self.drawer.draw(offsetx=self.offset, width=self.width)
-
-
-
-
-
-
-from libqtile import hook, bar
-from libqtile.widget import base
-
-class MyWindowName(base._TextBox):
-    """Displays the name of the window that currently has focus"""
-    orientations = base.ORIENTATION_HORIZONTAL
-    defaults = [
-        ('show_state', True, 'show window status before window name'),
-        ('for_current_screen', False, 'instead of bars screen use currently active screen')
-    ]
-
-    def __init__(self, width=bar.STRETCH, **config):
-        base._TextBox.__init__(self, width=width, **config)
-        self.add_defaults(MyWindowName.defaults)
-
-    def _configure(self, qtile, bar):
-        base._TextBox._configure(self, qtile, bar)
-        hook.subscribe.window_name_change(self.update)
-        hook.subscribe.focus_change(self.update)
-        hook.subscribe.float_change(self.update)
-        # Clear the widget if group has no window
-        @hook.subscribe.client_killed
-        def on_client_killed(window):
-            if ((not self.for_current_screen and window == self.bar.screen.group.currentWindow) or
-                (self.for_current_screen and window == self.qtile.currentScreen.group.currentWindow)):
-                self.text = ""
-                self.bar.draw()
-        @hook.subscribe.current_screen_change
-        def on_screen_changed():
-            if self.for_current_screen:
-                self.update()
-
-    def update(self):
-        if self.for_current_screen:
-            w = self.qtile.currentScreen.group.currentWindow
-        else:
-            w = self.bar.screen.group.currentWindow
-        state = ''
-        if self.show_state and w is not None:
-            if w.maximized:
-                state = '[] '
-            elif w.minimized:
-                state = '_ '
-            elif w.floating:
-                state = 'V '
-        self.text = "%s%s" % (state, w.name if w and w.name else " ")
-        self.bar.draw()
-
-
-
-
-
-
-
-class MyPrompt(widget.Prompt):
-    def __init__(self, name="prompt", **config):
-        widget.Prompt.__init__(self, name, **config)
-
-    def _highlight_text(self, text):
-        if self.show_cursor:
-            text = '<span foreground="{0}" background="{1}">{2}</span>'.format(theme['background'], theme['foreground'], text)
-        else:
-            text = '<span foreground="{0}" background="{1}">{2}</span>'.format(theme['foreground'], theme['background'], text)
-        return text
-
-
-
-
-
-
-
 def move_window_to_screen(screen):
     def cmd(qtile):
         w = qtile.currentWindow
@@ -441,7 +179,7 @@ widget_defaults = dict(font='Arial', fontsize=13, padding=2)
 
 def init_widgets():
     widgets = [
-            MyGroupBox(disable_drag=True,
+            widget.GroupBox(disable_drag=True,
                        highlight_method='block',
                        this_current_screen_border=theme['foreground'],
                        this_screen_border=theme['screenblur'],
@@ -452,12 +190,14 @@ def init_widgets():
                        borderwidth=1,
                       ),
 #           widget.CurrentLayout(foreground='8b6840'),
-            MyWindowName(foreground=theme['text'], for_current_screen=True),
+            widget.WindowName(foreground=theme['text'], for_current_screen=True),
 #           widget.CurrentScreen(),
-            MyPrompt(foreground=theme['textprompt'],
+            widget.Prompt(foreground=theme['textprompt'],
                           cursor_color=theme['foreground'],
+                          cursor_style='block',
                           bell_style='visual',
                           visual_bell_time=0.1,
+                          visual_bell_color='#ffffff',
                           font="DejaVu Sans Mono",
                          ),
         ]
