@@ -1,0 +1,67 @@
+#!/bin/bash
+# vim: fdm=marker
+
+cd
+
+xrdb ~/.Xdefaults
+# disable screensaver
+xset s off
+# disable DMPS
+xset -dpms
+
+~/bin/xscreenlayout
+
+# check or pick display manager {{{
+
+if [ -z "$WINDOWMANAGER" ]; then
+	source ~/.environment
+fi;
+
+
+if [ -z "$WINDOWMANAGER" ]; then
+	WINDOWMANAGER="python3 $HOME/.qtile/qtile/bin/qtile -c $HOME/.qtile/config/config.py"
+	# or one of:
+	#   /usr/bin/xterm
+	#   /usr/bin/startkde
+	#   /usr/bin/gnome-session
+fi;
+
+export WINDOWMANAGER
+
+# }}}
+
+# in case of xmonad, start all the accompanying programs {{{
+
+if echo "$WINDOWMANAGER" | grep xmonad > /dev/null 2>&1; then
+	(trayer --edge top --align left --SetDockType true --SetPartialStrut true --expand true --widthtype pixel --width 71 --margin 1008 --transparent true --tint 0x220000 --height 12 &)
+	( (sleep 3; exec ~/bin/update-background)&)
+	(exec dunst&)
+	( (sleep 3; exec blueman-applet) &)
+fi;
+
+if echo "$WINDOWMANAGER" | grep qtile > /dev/null 2>&1; then
+	(exec dunst&)
+	( (sleep 3; exec blueman-applet) &)
+fi;
+
+
+# }}}
+
+# other programs {{{
+
+case "$(hostname)" in
+	windfury)
+		(~/bin/mpd&)
+		;;
+esac
+
+#(gajim&)
+
+# }}}
+
+# setup input devices
+~/bin/keyb
+
+# execute display manager
+exec $WINDOWMANAGER > ~/.windowmanager.log 2>&1
+
