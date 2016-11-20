@@ -6,10 +6,9 @@ cd
 xrdb ~/.Xdefaults
 # disable screensaver
 xset s off
-# disable DMPS
 xset -dpms
-
 ~/bin/xscreenlayout
+(~/bin/hid-reset &)
 
 # check or pick display manager {{{
 
@@ -53,14 +52,14 @@ case "$(hostname)" in
 	windfury)
 		(~/bin/mpd&)
 		;;
+	proton)
+		(nm-applet &)
+		;;
 esac
 
 #(gajim&)
 
 # }}}
-
-# setup input devices
-~/bin/keyb
 
 # execute display manager
 exec $WINDOWMANAGER > ~/.windowmanager.log 2>&1
