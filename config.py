@@ -150,7 +150,7 @@ for _modifier in [ ("", "NONE"),
         _mod = [mod]
         if("" != _modifier[0]):
             _mod.append(_modifier[0])
-        keys.append( Key(_mod, _fkey_name, lazy.spawn("/home/dpiegdon/bin/special_keys {} {}".format(_fkey_name, _modifier[1])) ) )
+        keys.append( Key(_mod, _fkey_name, lazy.spawn("special_keys {} {}".format(_fkey_name, _modifier[1])) ) )
 
 groups = [Group(i) for i in "123456789"]
 
