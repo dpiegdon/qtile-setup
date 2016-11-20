@@ -1,0 +1,3 @@
+[submodule "qtile"]
+	path = qtile
+	url = git@github.com:dpiegdon/qtile.git
