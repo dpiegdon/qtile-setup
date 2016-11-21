@@ -1,6 +1,6 @@
 [submodule "qtile"]
 	path = qtile
-	url = git@github.com:dpiegdon/qtile.git
+	url = https://github.com/dpiegdon/qtile.git
 [submodule "qtile-examples"]
 	path = qtile-examples
 	url = https://github.com/qtile/qtile-examples.git
