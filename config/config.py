@@ -145,7 +145,7 @@ for _modifier in [ ("", "NONE"),
                    ("control", "CTRL"),
                    ("mod1", "ALT"),
                    ("mod5", "MODESWITCH") ]:
-    for _fkey in range(1,11):
+    for _fkey in range(1,13):
         _fkey_name = "F{}".format(_fkey)
         _mod = [mod]
         if("" != _modifier[0]):
