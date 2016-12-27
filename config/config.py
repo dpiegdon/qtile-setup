@@ -177,6 +177,18 @@ layouts = [
 
 widget_defaults = dict(font='Arial', fontsize=13, padding=2)
 
+def get_dirty_mem_M():
+    try:
+        with open("/proc/meminfo") as meminfo:
+            while True:
+                line = meminfo.readline().rstrip('\n ')
+                if line.startswith('Dirty:'):
+                    dirtymem = int(line.split()[1])
+                    return "{}K".format(int(dirtymem / 1024))
+    except Exception:
+        pass
+    return "?"
+
 def init_widgets():
     widgets = [
             widget.GroupBox(disable_drag=True,
@@ -211,6 +223,7 @@ def init_widgets():
                               ),
             ]
     widgets += [
+            widget.GenPollText(func=get_dirty_mem_M, update_interval=15, foreground='#ff4400'),
             widget.Clock(format='%Y-%m-%d %a %H:%M'),
             widget.Systray(icon_size=12),
         ]
