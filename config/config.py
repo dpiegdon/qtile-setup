@@ -183,8 +183,8 @@ def get_dirty_mem_M():
             while True:
                 line = meminfo.readline().rstrip('\n ')
                 if line.startswith('Dirty:'):
-                    dirtymem = int(line.split()[1])
-                    return "{}K".format(int(dirtymem / 1024))
+                    dirtymem_K = int(line.split()[1])
+                    return "{}M".format(int(dirtymem_K / 1024))
     except Exception:
         pass
     return "?"
