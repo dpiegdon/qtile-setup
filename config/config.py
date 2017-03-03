@@ -152,7 +152,7 @@ for _modifier in [ ("", "NONE"),
             _mod.append(_modifier[0])
         keys.append( Key(_mod, _fkey_name, lazy.spawn("special_keys {} {}".format(_fkey_name, _modifier[1])) ) )
 
-groups = [Group(i) for i in "123456789"]
+groups = [Group(i) for i in "1234567890"]
 
 for i in groups:
     keys.append(Key([mod],          i.name, lazy.group[i.name].toscreen()))
