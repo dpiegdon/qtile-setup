@@ -160,6 +160,11 @@ for i in groups:
 
 
 mouse = [
+    Click([mod], "Button9", lazy.spawn("special_keys NONE MOUSE9")),
+    Click([mod, "shift"], "Button9", lazy.spawn("special_keys SHIFT MOUSE9")),
+    Click([mod, "control"], "Button9", lazy.spawn("special_keys CTRL MOUSE9")),
+    Click([mod, "mod1"], "Button9", lazy.spawn("special_keys ALT MOUSE9")),
+    Click([mod, "mod5"], "Button9", lazy.spawn("special_keys MODESWITCH MOUSE9")),
     Drag([mod], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
     Drag([mod], "Button3", lazy.window.set_size_floating(),     start=lazy.window.get_size()),
 ]
