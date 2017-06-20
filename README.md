@@ -6,6 +6,6 @@ typical setup:
 		ln -s .qtile/xsession ~/.xsession
 		ln -s .qtile/xsession ~/.xinitrc
 		cd .qtile/qtile
-		python ./libqtile/ffi_build.py
-		./setup.py build
+		python3 ./libqtile/ffi_build.py
+		python3 ./setup.py build
 
