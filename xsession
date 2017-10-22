@@ -16,7 +16,6 @@ if [ -z "$WINDOWMANAGER" ]; then
 	source ~/.environment
 fi;
 
-
 if [ -z "$WINDOWMANAGER" ]; then
 	WINDOWMANAGER="python3 $HOME/.qtile/qtile/bin/qtile -c $HOME/.qtile/config/config.py"
 	# or one of:
@@ -29,20 +28,20 @@ export WINDOWMANAGER
 
 # }}}
 
-# in case of xmonad, start all the accompanying programs {{{
+# in case of xmonad or qtile, start all the accompanying programs {{{
 
-if echo "$WINDOWMANAGER" | grep xmonad > /dev/null 2>&1; then
-	(trayer --edge top --align left --SetDockType true --SetPartialStrut true --expand true --widthtype pixel --width 71 --margin 1008 --transparent true --tint 0x220000 --height 12 &)
-	( (sleep 3; exec ~/bin/update-background)&)
-	(exec dunst&)
-	( (sleep 3; exec blueman-applet) &)
-fi;
-
-if echo "$WINDOWMANAGER" | grep qtile > /dev/null 2>&1; then
-	(exec dunst&)
-	( (sleep 3; exec blueman-applet) &)
-fi;
-
+case `basename "$WINDOWMANAGER"` in
+	xmonad)
+		(trayer --edge top --align left --SetDockType true --SetPartialStrut true --expand true --widthtype pixel --width 71 --margin 1008 --transparent true --tint 0x220000 --height 12 &)
+		( (sleep 3; exec ~/bin/update-background)&)
+		(exec dunst&)
+		( (sleep 3; exec blueman-applet) &)
+		;;
+	qtile)
+		(exec dunst&)
+		( (sleep 3; exec blueman-applet) &)
+		;;
+esac
 
 # }}}
 
@@ -50,7 +49,7 @@ fi;
 
 case "$(hostname)" in
 	windfury)
-		(~/bin/mpd&)
+		(~/bin/mpd &)
 		;;
 	proton)
 		(nm-applet &)

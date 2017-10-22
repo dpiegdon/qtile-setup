@@ -167,6 +167,8 @@ mouse = [
     Click(["mod5"], "Button9", lazy.spawn("special_keys MOUSE9 MODESWITCH")),
     Drag([mod], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
     Drag([mod], "Button3", lazy.window.set_size_floating(),     start=lazy.window.get_size()),
+    #Drag([mod], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position(True), finish=lazy.window.reset_mouse_focus()),
+    #Drag([mod], "Button3", lazy.window.set_size_floating(),     start=lazy.window.get_size(True), finish=lazy.window.reset_mouse_focus()),
 ]
 
 
