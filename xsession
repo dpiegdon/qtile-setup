@@ -37,9 +37,11 @@ case `basename "$WINDOWMANAGER"` in
 		(exec dunst&)
 		( (sleep 3; exec blueman-applet) &)
 		;;
-	qtile)
-		(exec dunst&)
-		( (sleep 3; exec blueman-applet) &)
+	*)
+		echo $WINDOWMANAGER | grep '\<qtile\>' > /dev/null 2>&1 && {
+			(exec dunst&)
+			( (sleep 3; exec blueman-applet) &)
+		}
 		;;
 esac
 
@@ -52,6 +54,9 @@ case "$(hostname)" in
 		(~/bin/mpd &)
 		;;
 	proton)
+		(nm-applet &)
+		;;
+	aluminumbar)
 		(nm-applet &)
 		;;
 esac

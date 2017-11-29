@@ -229,6 +229,15 @@ def init_widgets():
                                format='{char}{percent:2.0%} {hour:d}:{min:02d} ',
                               ),
             ]
+    elif "aluminumbar" == socket.gethostname():
+        widgets += [
+                widget.Battery(battery_name='BAT0',
+                               foreground=theme['textbattery'],
+                               charge_char='+',
+                               discharge_char='–',
+                               format='{char}{percent:2.0%} {hour:d}:{min:02d} ',
+                              ),
+            ]
     widgets += [
             widget.GenPollText(func=get_dirty_mem_M, update_interval=15, foreground='#ff4400'),
             widget.Clock(format='%Y-%m-%d %a %H:%M'),
