@@ -130,7 +130,8 @@ keys = [
     Key([mod, "shift"], "q", lazy.restart()),
     Key([mod, "control", "shift"], "q", lazy.shutdown()),
     Key([mod], "BackSpace", lazy.spawncmd()),
-    Key([mod], "Escape", lazy.spawn("xlock")),
+    Key([mod], "Escape", lazy.spawn("xautolock -locknow")),
+    Key([mod, "mod5"], "Escape", lazy.spawn("xautolock -toggle")),
     Key([mod, "control"], "Return", lazy.spawn("/usr/bin/xterm -u8 -e tmux -2 attach")),
 
     Key([mod], "Left",  lazy.screen.prev_group(skip_empty=True, skip_managed=True)),
@@ -151,6 +152,22 @@ for _modifier in [ ("", "NONE"),
         if("" != _modifier[0]):
             _mod.append(_modifier[0])
         keys.append( Key(_mod, _fkey_name, lazy.spawn("special_keys {} {}".format(_fkey_name, _modifier[1])) ) )
+
+for _fkey in [  "XF86MonBrightnessDown",
+                "XF86MonBrightnessUp",
+                "XF86LaunchA",
+                "XF86LaunchB",
+                "XF86KbdBrightnessDown",
+                "XF86KbdBrightnessUp",
+                "XF86AudioPrev",
+                "XF86AudioPlay",
+                "XF86AudioNext",
+                "XF86AudioMute",
+                "XF86AudioLowerVolume",
+                "XF86AudioRaiseVolume",
+                "XF86Eject"
+                ]:
+    keys.append( Key([], _fkey, lazy.spawn("special_keys {} NONE".format(_fkey))) )
 
 groups = [Group(i) for i in "1234567890"]
 
