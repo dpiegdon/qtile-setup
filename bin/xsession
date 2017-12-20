@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh -x
 # vim: fdm=marker
 
 cd
@@ -32,15 +32,16 @@ export WINDOWMANAGER
 
 start_screenlocker() {
 	which xautolock > /dev/null 2>&1 && (
-		KILLEROPTIONS=""
-
 		# laptop?
+		KILLEROPT=""
 		BATTERYCOUNT=$(ls -1 /sys/class/power_supply/ | grep BAT > /dev/null 2>&1 | wc -l)
-		if [ $BATTERYCOUNT -ge 1 ]; then
-			KILLEROPTIONS='-killtime 1 -killer "systemctl suspend"'
-		fi
+		[ $BATTERYCOUNT -ge 1 ] && KILLEROPT='-killtime 1 -killer "systemctl suspend"'
 
-		xautolock -time 3 $KILLEROPTIONS &
+		xautolock -locker ~/.qtile/bin/xlock -time 3 \
+			-notify 15 -notifier '/usr/bin/notify-send -u critical -t 15000 -- LOCKING' \
+			$KILLEROPT \
+			&
+
 		XAUTOLOCK_FILE="/tmp/.qtile_xautolock_$!"
 		touch $XAUTOLOCK_FILE
 	)

@@ -130,7 +130,7 @@ keys = [
     Key([mod, "shift"], "q", lazy.restart()),
     Key([mod, "control", "shift"], "q", lazy.shutdown()),
     Key([mod], "BackSpace", lazy.spawncmd()),
-    Key([mod], "Escape", lazy.spawn("xautolock -locknow")),
+    Key([mod], "Escape", lazy.spawn("xautolock-force")),
     Key([mod, "mod5"], "Escape", lazy.spawn("xautolock -toggle")),
     Key([mod, "control"], "Return", lazy.spawn("/usr/bin/xterm -u8 -e tmux -2 attach")),
 

@@ -6,6 +6,7 @@ dependencies: (for debian)
 		python3-pip
 		python3-dbus
 		libpangocairo-1.0-0
+		i3lock
 		xautolock
 
 		pip3 install xcffib
@@ -15,9 +16,10 @@ typical setup:
 
 		cd ~
 		git clone --recursive <this-repo> .qtile
-		ln -s .qtile/xsession ~/.xsession
-		ln -s .qtile/xsession ~/.xinitrc
-		ln -s .qtile/xlock ~/bin/xlock
+		ln -s .qtile/bin/xsession ~/.xsession
+		ln -s .qtile/bin/xsession ~/.xinitrc
+		ln -s .qtile/bin/xlock ~/bin/
+		ln -s .qtile/bin/xautolock-force ~/bin/
 		cd .qtile/qtile
 		python3 ./libqtile/ffi_build.py
 		python3 ./setup.py build
