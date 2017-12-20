@@ -16,10 +16,10 @@ typical setup:
 
 		cd ~
 		git clone --recursive <this-repo> .qtile
-		ln -s .qtile/bin/xsession ~/.xsession
-		ln -s .qtile/bin/xsession ~/.xinitrc
-		ln -s .qtile/bin/xlock ~/bin/
-		ln -s .qtile/bin/xautolock-force ~/bin/
+		ln -s ~/.qtile/bin/xsession ~/.xsession
+		ln -s ~/.qtile/bin/xsession ~/.xinitrc
+		ln -s ~/.qtile/bin/xlock ~/bin/
+		ln -s ~/.qtile/bin/xautolock-force ~/bin/
 		cd .qtile/qtile
 		python3 ./libqtile/ffi_build.py
 		python3 ./setup.py build
