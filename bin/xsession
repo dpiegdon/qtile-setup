@@ -38,7 +38,7 @@ start_screenlocker() {
 		[ $BATTERYCOUNT -ge 1 ] && KILLEROPT='-killtime 1 -killer "systemctl suspend"'
 
 		xautolock -locker ~/.qtile/bin/xlock -time 3 \
-			-notify 15 -notifier '/usr/bin/notify-send -u critical -t 15000 -- LOCKING' \
+			-notify 15 -notifier '/usr/bin/notify-send -u critical -t 15000 -- LOCKING SHORTLY' \
 			$KILLEROPT \
 			&
 
