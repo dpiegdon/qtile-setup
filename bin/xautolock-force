@@ -1,2 +1,3 @@
 #!/bin/sh
-xautolock -enable && xautolock -locknow
+xautolock -enable
+xautolock -locknow
