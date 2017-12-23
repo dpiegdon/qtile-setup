@@ -13,7 +13,7 @@ xset -dpms
 # check or pick display manager {{{
 
 if [ -z "$WINDOWMANAGER" ]; then
-	source ~/.environment
+	. ~/.environment
 fi;
 
 if [ -z "$WINDOWMANAGER" ]; then
