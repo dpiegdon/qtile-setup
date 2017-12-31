@@ -8,6 +8,7 @@ dependencies: (for debian)
 		libpangocairo-1.0-0
 		i3lock
 		xautolock
+		libnotify-bin
 
 		pip3 install xcffib
 		pip3 install cairocffi
