@@ -2,6 +2,9 @@
 # coding: utf-8
 # vim: expandtab tabstop=4 shiftwidth=4 softtabstop=4 colorcolumn=100
 
+# default config is in qtile repo in:
+# libqtile/resources/default_config.py
+
 import socket
 from subprocess import call
 
@@ -105,6 +108,8 @@ keys = [
     # Swap panes of split stack
     Key([mod, "shift"], "n", lazy.layout.rotate()),
 
+    Key([mod], "Up", lazy.hide_show_bar()),
+    Key([mod], "Return", lazy.window.toggle_fullscreen()),
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
