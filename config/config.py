@@ -28,6 +28,20 @@ redTheme = {
         'textbattery': '#00aaaa',
     }
 
+greenTheme = {
+        'focus':       '#00ff00',
+        'blur':        '#880088',
+        'floatfocus':  '#00ff88',
+        'floatblur':   '#880044',
+        'rootwindow':  '#004400',
+        'foreground':  '#00cc00',
+        'screenblur':  '#770077',
+        'background':  '#000000',
+        'text':        '#c0c0c0',
+        'textprompt':  '#ff44ff',
+        'textbattery': '#aa00aa',
+    }
+
 blueTheme = {
         'focus':       '#0088ff',
         'blur':        '#333366',
