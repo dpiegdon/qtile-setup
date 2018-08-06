@@ -287,7 +287,7 @@ dgroups_key_binder = None
 dgroups_app_rules = []
 main = None
 follow_mouse_focus = True
-bring_front_click = True
+bring_front_click = False
 cursor_warp = False
 floating_layout = layout.Floating(border_focus=theme['floatfocus'], border_normal=theme['floatblur'])
 auto_fullscreen = True
