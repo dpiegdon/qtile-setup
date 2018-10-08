@@ -3,10 +3,14 @@
 # vim: expandtab tabstop=4 shiftwidth=4 softtabstop=4 colorcolumn=100
 
 # default config is in qtile repo in:
-# libqtile/resources/default_config.py
+#   libqtile/resources/default_config.py
+# when default-config is used due to config error, type:
+#   WIN+CTRL+R  to restart qtile
+#   WIN+R       to execute something
 
 import socket
-from subprocess import call
+import subprocess
+import os
 
 from libqtile import layout, widget, bar, hook
 from libqtile.widget import base
@@ -220,6 +224,21 @@ layouts = [
 
 widget_defaults = dict(font='Arial', fontsize=13, padding=2)
 
+def get_net_diag():
+    try:
+        with open(os.path.expanduser("~/.qtile/config/net-diag.conf")) as config:
+            for line in config.readlines():
+                (dst, name) = line.split()
+                ping = subprocess.Popen(["ping", "-c1", dst],
+                                        stdin = subprocess.PIPE,
+                                        stdout = subprocess.PIPE,
+                                        stderr = subprocess.STDOUT)
+                if 0 == ping.wait():
+                    return "+"+name
+        return "-"
+    except Exception:
+        return "?conf"
+
 def get_dirty_mem_M():
     try:
         with open("/proc/meminfo") as meminfo:
@@ -275,6 +294,7 @@ def init_widgets():
                               ),
             ]
     widgets += [
+            widget.GenPollText(func=get_net_diag, update_interval=30, foreground='#880088'),
             widget.GenPollText(func=get_dirty_mem_M, update_interval=15, foreground='#ff4400'),
             widget.Clock(format='%Y-%m-%d %a %H:%M'),
             widget.Systray(icon_size=12),
@@ -304,5 +324,5 @@ focus_on_window_activation = "smart"
 wmname = "LG3D"
 
 # set root-window background
-call(['xsetroot', '-solid', theme['rootwindow']])
+subprocess.call(['xsetroot', '-solid', theme['rootwindow']])
 
