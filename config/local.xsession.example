@@ -1,0 +1,6 @@
+#!/bin/sh
+
+(exec ~/bin/mpd &)
+(exec nm-applet &)
+(exec gajim &)
+( (sleep 3; exec blueman-applet) &)

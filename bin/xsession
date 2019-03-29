@@ -59,28 +59,15 @@ case `basename "$WINDOWMANAGER"` in
 		echo $WINDOWMANAGER | grep '\<qtile\>' > /dev/null 2>&1 && {
 			start_screenlocker
 			(exec dunst&)
-			( (sleep 3; exec blueman-applet) &)
 		}
 		;;
 esac
 
 # }}}
 
-# other programs {{{
+# host-specific session setup {{{
 
-case "$(hostname)" in
-	windfury)
-		(~/bin/mpd &)
-		;;
-	proton)
-		(nm-applet &)
-		;;
-	aluminumbar)
-		(nm-applet &)
-		;;
-esac
-
-#(gajim&)
+[ -e $HOME/.qtile/config/local.xsession ] && $HOME/.qtile/config/local.xsession
 
 # }}}
 
