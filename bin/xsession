@@ -8,6 +8,7 @@ xrdb ~/.Xdefaults
 xset s off
 xset -dpms
 [ -e ~/bin/xscreenlayout ] && ~/bin/xscreenlayout
+sleep 1
 (~/bin/hid-reset &)
 
 # check or pick display manager {{{
