@@ -14,7 +14,7 @@ import os
 
 from libqtile import layout, widget, bar, hook
 from libqtile.widget import base
-from libqtile.manager import Screen, Drag, Click
+from libqtile.core.manager import Screen, Drag, Click
 from libqtile.command import lazy
 from libqtile.config import Key, Screen, Group, Drag, Click
 
