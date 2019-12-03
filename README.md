@@ -23,7 +23,7 @@ typical setup:
 		ln -s ~/.qtile/bin/xautolock-force ~/bin/
 		cd .qtile/qtile
 		./scripts/ffibuild
-		./build.py build
+		./setup.py build
 		
 then copy some picture to ~/.locked.png for the locking screen.
 
