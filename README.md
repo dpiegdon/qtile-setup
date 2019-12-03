@@ -22,6 +22,11 @@ typical setup:
 		ln -s ~/.qtile/bin/xlock ~/bin/
 		ln -s ~/.qtile/bin/xautolock-force ~/bin/
 		cd .qtile/qtile
+
+		# NOTE:
+		# in the following two files you might want to
+		# (temporarily) set the shebang to /usr/bin/python3
+		# if your system still has /usr/bin/python set to python2!
 		./scripts/ffibuild
 		./setup.py build
 		
