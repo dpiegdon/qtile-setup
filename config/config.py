@@ -78,100 +78,101 @@ theme = redTheme
 
 def move_window_to_screen(screen):
     def cmd(qtile):
-        w = qtile.currentWindow
-        # XXX: strange behaviour - w.focus() doesn't work
-        # if toScreen is called after togroup...
-        qtile.toScreen(screen)
+        w = qtile.current_window
         if w is not None:
             w.togroup(qtile.screens[screen].group.name)
     return cmd
 
-mod = "mod4"
+modkey = "mod4"
+shiftkey = "shift"
+controlkey = "control"
+altkey = "mod1"
+modeswitchkey = "mod5"
 
 keys = [
-    Key([mod], "h", lazy.layout.left()),
-    Key([mod], "j", lazy.layout.down()),
-    Key([mod], "k", lazy.layout.up()),
-    Key([mod], "l", lazy.layout.right()),
+    Key([modkey], "h", lazy.layout.left()),
+    Key([modkey], "j", lazy.layout.down()),
+    Key([modkey], "k", lazy.layout.up()),
+    Key([modkey], "l", lazy.layout.right()),
 
-    Key([mod], "n", lazy.layout.next()),
-    Key([mod], "p", lazy.layout.previous()),
+    Key([modkey], "n", lazy.layout.next()),
+    Key([modkey], "p", lazy.layout.previous()),
 
-    Key([mod], "Tab", lazy.group.next_window()),
-    Key([mod, "shift"], "Tab", lazy.window.bring_to_front()),
+    Key([modkey], "Tab", lazy.group.next_window()),
+    Key([modkey, shiftkey], "Tab", lazy.window.bring_to_front()),
 
-    Key([mod, "shift"], "h", lazy.layout.shuffle_left()),
-    Key([mod, "shift"], "j", lazy.layout.shuffle_down()),
-    Key([mod, "shift"], "k", lazy.layout.shuffle_up()),
-    Key([mod, "shift"], "l", lazy.layout.shuffle_right()),
+    Key([modkey, shiftkey], "h", lazy.layout.shuffle_left()),
+    Key([modkey, shiftkey], "j", lazy.layout.shuffle_down()),
+    Key([modkey, shiftkey], "k", lazy.layout.shuffle_up()),
+    Key([modkey, shiftkey], "l", lazy.layout.shuffle_right()),
 
-    Key([mod, "control"], "h", lazy.layout.grow_left()),
-    Key([mod, "control"], "j", lazy.layout.grow_down()),
-    Key([mod, "control"], "k", lazy.layout.grow_up()),
-    Key([mod, "control"], "l", lazy.layout.grow_right()),
+    Key([modkey, controlkey], "h", lazy.layout.grow_left()),
+    Key([modkey, controlkey], "j", lazy.layout.grow_down()),
+    Key([modkey, controlkey], "k", lazy.layout.grow_up()),
+    Key([modkey, controlkey], "l", lazy.layout.grow_right()),
 
-    Key([mod, "control", "shift"], "h", lazy.layout.swap_left()),
-    Key([mod, "control", "shift"], "j", lazy.layout.swap_down()),
-    Key([mod, "control", "shift"], "k", lazy.layout.swap_up()),
-    Key([mod, "control", "shift"], "l", lazy.layout.swap_right()),
+    Key([modkey, controlkey, shiftkey], "h", lazy.layout.swap_left()),
+    Key([modkey, controlkey, shiftkey], "j", lazy.layout.swap_down()),
+    Key([modkey, controlkey, shiftkey], "k", lazy.layout.swap_up()),
+    Key([modkey, controlkey, shiftkey], "l", lazy.layout.swap_right()),
 
-    Key([mod], "y", lazy.layout.shrink()),
-    Key([mod], "u", lazy.layout.grow()),
-    Key([mod], "i", lazy.layout.normalize()),
-    Key([mod], "o", lazy.layout.maximize()),
+    Key([modkey], "y", lazy.layout.shrink()),
+    Key([modkey], "u", lazy.layout.grow()),
+    Key([modkey], "i", lazy.layout.normalize()),
+    Key([modkey], "o", lazy.layout.maximize()),
 
-    Key([mod, "shift"], "space", lazy.layout.flip()),
+    Key([modkey, shiftkey], "space", lazy.layout.flip()),
 
 
     # Swap panes of split stack
-    Key([mod, "shift"], "n", lazy.layout.rotate()),
+    Key([modkey, shiftkey], "n", lazy.layout.rotate()),
 
-    Key([mod], "Up", lazy.hide_show_bar()),
-    Key([mod], "Return", lazy.window.toggle_fullscreen()),
+    Key([modkey], "Up", lazy.hide_show_bar()),
+    Key([modkey], "Return", lazy.window.toggle_fullscreen()),
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
     # multiple stack panes
-    Key([mod, "shift"], "Return", lazy.layout.toggle_split()),
+    Key([modkey, shiftkey], "Return", lazy.layout.toggle_split()),
 
     # Handle floating windows
-    Key([mod], "t", lazy.window.toggle_floating()),
+    Key([modkey], "t", lazy.window.toggle_floating()),
 
     # Toggle between different layouts as defined below
-    Key([mod], "space", lazy.next_layout()),
+    Key([modkey], "space", lazy.next_layout()),
 
     # Multi-Display setup
-    Key([mod], "w", lazy.to_screen(0)),
-    Key([mod, "shift"], "w", lazy.function(move_window_to_screen(0))),
-    Key([mod], "e", lazy.to_screen(1)),
-    Key([mod, "shift"], "e", lazy.function(move_window_to_screen(1))),
-    Key([mod], "r", lazy.to_screen(2)),
-    Key([mod, "shift"], "r", lazy.function(move_window_to_screen(2))),
+    Key([modkey], "w", lazy.to_screen(0)),
+    Key([modkey, shiftkey], "w", lazy.function(move_window_to_screen(0))),
+    Key([modkey], "e", lazy.to_screen(1)),
+    Key([modkey, shiftkey], "e", lazy.function(move_window_to_screen(1))),
+    Key([modkey], "r", lazy.to_screen(2)),
+    Key([modkey, shiftkey], "r", lazy.function(move_window_to_screen(2))),
 
     # Execute programs and terminate/reconfig WM
-    Key([mod], "q", lazy.window.kill()),
-    Key([mod, "shift"], "q", lazy.restart()),
-    Key([mod, "control", "shift"], "q", lazy.shutdown()),
-    Key([mod], "BackSpace", lazy.spawncmd()),
-    Key([mod], "Escape", lazy.spawn("xautolock-force")),
-    Key([mod, "mod5"], "Escape", lazy.spawn("xautolock -toggle")),
-    Key([mod, "control"], "Return", lazy.spawn("/usr/bin/xterm -u8 -e tmux -2 attach")),
+    Key([modkey], "q", lazy.window.kill()),
+    Key([modkey, shiftkey], "q", lazy.restart()),
+    Key([modkey, controlkey, shiftkey], "q", lazy.shutdown()),
+    Key([modkey], "BackSpace", lazy.spawncmd()),
+    Key([modkey], "Escape", lazy.spawn("xautolock-force")),
+    Key([modkey, modeswitchkey], "Escape", lazy.spawn("xautolock -toggle")),
+    Key([modkey, controlkey], "Return", lazy.spawn("/usr/bin/xterm -u8 -e tmux -2 attach")),
 
-    Key([mod], "Left",  lazy.screen.prev_group(skip_empty=True, skip_managed=True)),
-    Key([mod], "Right", lazy.screen.next_group(skip_empty=True, skip_managed=True)),
-    Key([mod, "shift"], "Left",  lazy.screen.prev_group(skip_managed=True)),
-    Key([mod, "shift"], "Right", lazy.screen.next_group(skip_managed=True)),
+    Key([modkey], "Left",  lazy.screen.prev_group(skip_empty=True, skip_managed=True)),
+    Key([modkey], "Right", lazy.screen.next_group(skip_empty=True, skip_managed=True)),
+    Key([modkey, shiftkey], "Left",  lazy.screen.prev_group(skip_managed=True)),
+    Key([modkey, shiftkey], "Right", lazy.screen.next_group(skip_managed=True)),
 ]
 
 # map function keys to special_keys script
 for _modifier in [ ("", "NONE"),
-                   ("shift", "SHIFT"),
-                   ("control", "CTRL"),
-                   ("mod1", "ALT"),
-                   ("mod5", "MODESWITCH") ]:
+                   (shiftkey, "SHIFT"),
+                   (controlkey, "CTRL"),
+                   (altkey, "ALT"),
+                   (modeswitchkey, "MODESWITCH") ]:
     for _fkey in range(1,13):
         _fkey_name = "F{}".format(_fkey)
-        _mod = [mod]
+        _mod = [modkey]
         if("" != _modifier[0]):
             _mod.append(_modifier[0])
         keys.append( Key(_mod, _fkey_name, lazy.spawn("special_keys {} {}".format(_fkey_name, _modifier[1])) ) )
@@ -195,20 +196,20 @@ for _fkey in [  "XF86MonBrightnessDown",
 groups = [Group(i) for i in "1234567890"]
 
 for i in groups:
-    keys.append(Key([mod],          i.name, lazy.group[i.name].toscreen()))
-    keys.append(Key([mod, "shift"], i.name, lazy.window.togroup(i.name)))
+    keys.append(Key([modkey],          i.name, lazy.group[i.name].toscreen()))
+    keys.append(Key([modkey, shiftkey], i.name, lazy.window.togroup(i.name)))
 
 
 mouse = [
     Click([], "Button9", lazy.spawn("special_keys MOUSE9 NONE")),
-    Click(["shift"], "Button9", lazy.spawn("special_keys MOUSE9 SHIFT")),
-    Click(["control"], "Button9", lazy.spawn("special_keys MOUSE9 CTRL")),
-    Click(["mod1"], "Button9", lazy.spawn("special_keys MOUSE9 ALT")),
-    Click(["mod5"], "Button9", lazy.spawn("special_keys MOUSE9 MODESWITCH")),
-    Drag([mod], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
-    Drag([mod], "Button3", lazy.window.set_size_floating(),     start=lazy.window.get_size()),
-    #Drag([mod], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position(True), finish=lazy.window.reset_mouse_focus()),
-    #Drag([mod], "Button3", lazy.window.set_size_floating(),     start=lazy.window.get_size(True), finish=lazy.window.reset_mouse_focus()),
+    Click([shiftkey], "Button9", lazy.spawn("special_keys MOUSE9 SHIFT")),
+    Click([controlkey], "Button9", lazy.spawn("special_keys MOUSE9 CTRL")),
+    Click([altkey], "Button9", lazy.spawn("special_keys MOUSE9 ALT")),
+    Click([modeswitchkey], "Button9", lazy.spawn("special_keys MOUSE9 MODESWITCH")),
+    Drag([modkey], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
+    Drag([modkey], "Button3", lazy.window.set_size_floating(),     start=lazy.window.get_size()),
+    #Drag([modkey], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position(True), finish=lazy.window.reset_mouse_focus()),
+    #Drag([modkey], "Button3", lazy.window.set_size_floating(),     start=lazy.window.get_size(True), finish=lazy.window.reset_mouse_focus()),
 ]
 
 
