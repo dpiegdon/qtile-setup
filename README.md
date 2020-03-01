@@ -12,6 +12,7 @@ dependencies: (for debian)
 
 		pip3 install xcffib
 		pip3 install cairocffi
+		pip3 install wheel
 
 typical setup:
 
