@@ -196,7 +196,7 @@ for _fkey in [  "XF86MonBrightnessDown",
 groups = [Group(i) for i in "1234567890"]
 
 for i in groups:
-    keys.append(Key([modkey],          i.name, lazy.group[i.name].toscreen()))
+    keys.append(Key([modkey],          i.name, lazy.group[i.name].toscreen(toggle=False)))
     keys.append(Key([modkey, shiftkey], i.name, lazy.window.togroup(i.name)))
 
 
