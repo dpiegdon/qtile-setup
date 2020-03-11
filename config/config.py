@@ -255,6 +255,7 @@ def get_dirty_mem_M():
 def init_widgets():
     widgets = [
             widget.GroupBox(disable_drag=True,
+                       use_mouse_wheel=False,
                        highlight_method='block',
                        this_current_screen_border=theme['foreground'],
                        this_screen_border=theme['screenblur'],
@@ -264,9 +265,7 @@ def init_widgets():
                        fontsize=9,
                        borderwidth=1,
                       ),
-#           widget.CurrentLayout(foreground='8b6840'),
             widget.WindowName(foreground=theme['text'], for_current_screen=True),
-#           widget.CurrentScreen(),
             widget.Prompt(foreground=theme['textprompt'],
                           cursor_color=theme['foreground'],
                           cursor_style='block',
@@ -276,7 +275,8 @@ def init_widgets():
                           font="DejaVu Sans Mono",
                          ),
         ]
-    if "proton" == socket.gethostname():
+    hostname = socket.gethostname()
+    if "proton" == hostname:
         widgets += [
                 widget.Battery(battery_name='BATC',
                                foreground=theme['textbattery'],
@@ -285,7 +285,7 @@ def init_widgets():
                                format='{char}{percent:2.0%} {hour:d}:{min:02d} ',
                               ),
             ]
-    elif "aluminumbar" == socket.gethostname():
+    elif "aluminumbar" == hostname:
         widgets += [
                 widget.Battery(battery_name='BAT0',
                                foreground=theme['textbattery'],
