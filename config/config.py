@@ -162,6 +162,9 @@ keys = [
     Key([modkey], "Right", lazy.screen.next_group(skip_empty=True, skip_managed=True)),
     Key([modkey, shiftkey], "Left",  lazy.screen.prev_group(skip_managed=True)),
     Key([modkey, shiftkey], "Right", lazy.screen.next_group(skip_managed=True)),
+
+    Key([modkey], "s", lazy.spawn("/usr/bin/gnome-screenshot")),
+    Key([modkey, shiftkey], "s", lazy.spawn("/usr/bin/gnome-screenshot --window")),
 ]
 
 # map function keys to special_keys script
