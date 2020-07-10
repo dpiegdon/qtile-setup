@@ -196,11 +196,15 @@ for _fkey in [  "XF86MonBrightnessDown",
                 ]:
     keys.append( Key([], _fkey, lazy.spawn("special_keys {} NONE".format(_fkey))) )
 
-groups = [Group(i) for i in "1234567890"]
+groups = [Group(i) for i in "`1234567890-="]
 
 for i in groups:
-    keys.append(Key([modkey],          i.name, lazy.group[i.name].toscreen(toggle=False)))
-    keys.append(Key([modkey, shiftkey], i.name, lazy.window.togroup(i.name)))
+    try:
+        keyname = { '`': "grave", '-': "minus", '=': "equal" }[i.name]
+    except KeyError:
+        keyname = i.name
+    keys.append(Key([modkey],           keyname, lazy.group[i.name].toscreen(toggle=False)))
+    keys.append(Key([modkey, shiftkey], keyname, lazy.window.togroup(i.name)))
 
 
 mouse = [
