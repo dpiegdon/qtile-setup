@@ -196,7 +196,7 @@ for _fkey in [  "XF86MonBrightnessDown",
                 ]:
     keys.append( Key([], _fkey, lazy.spawn("special_keys {} NONE".format(_fkey))) )
 
-groups = [Group(i) for i in "`1234567890-="]
+groups = [Group(i) for i in "1234567890-="]
 
 for i in groups:
     try:
