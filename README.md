@@ -1,18 +1,20 @@
 dependencies: (for debian)
 
-		python3-setuptools
-		python3-mpd
-		python3-keyring
-		python3-pip
-		python3-dbus
-		libpangocairo-1.0-0
 		i3lock
-		xautolock
 		libnotify-bin
+		libpangocairo-1.0-0
+		python3-cairocffi
+		python3-dbus
+		python3-keyring
+		python3-mpd
+		python3-pip
+		python3-setuptools
+		python3-wheel
+		python3-xcffib
+		xautolock
 
-		pip3 install xcffib
-		pip3 install cairocffi
-		pip3 install wheel
+if python packages are unavailable in your distro,
+you can try to install them via pip3.
 
 typical setup:
 
