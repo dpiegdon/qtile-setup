@@ -3,6 +3,7 @@ dependencies: (for debian)
 		i3lock
 		libnotify-bin
 		libpangocairo-1.0-0
+		libpulse-dev
 		python3-cairocffi
 		python3-dbus
 		python3-keyring

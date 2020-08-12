@@ -11,12 +11,34 @@
 import socket
 import subprocess
 import os
+import re
+import math
 
 from libqtile import layout, widget, bar, hook
 from libqtile.widget import base
 from libqtile.core.manager import Screen, Drag, Click
 from libqtile.command import lazy
 from libqtile.config import Key, Screen, Group, Drag, Click
+
+def get_primary_display_dpi():
+    xo = subprocess.run("xrandr", stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    try:
+        for line in xo.stdout.decode().split('\n'):
+            m = re.match(r'([^ ]*) connected primary ([0-9]*)x([0-9]*)\+0\+0 \(.*\) ([0-9]*)mm x ([0-9]*)mm', line)
+            if m is not None:
+                #display = m.group(1)
+                res_x = int(m.group(2))
+                res_y = int(m.group(3))
+                size_x_mm = int(m.group(4))
+                size_y_mm = int(m.group(5))
+                res_dia = math.sqrt(res_x**2 + res_y**2)
+                size_dia_inch = math.sqrt(size_x_mm**2 + size_y_mm**2) / 25.4
+                dpi = res_dia / size_dia_inch
+                return int(round(dpi, 0))
+                
+    except Exception:
+        pass
+    return 100 # sane default
 
 redTheme = {
         'focus':       '#ff0000',
@@ -214,6 +236,7 @@ mouse = [
     Click([altkey], "Button9", lazy.spawn("special_keys MOUSE9 ALT")),
     Click([modeswitchkey], "Button9", lazy.spawn("special_keys MOUSE9 MODESWITCH")),
     Drag([modkey], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
+    Drag([modkey, shiftkey], "Button1", lazy.window.set_size_floating(), start=lazy.window.get_size()),
     Drag([modkey], "Button3", lazy.window.set_size_floating(),     start=lazy.window.get_size()),
     #Drag([modkey], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position(True), finish=lazy.window.reset_mouse_focus()),
     #Drag([modkey], "Button3", lazy.window.set_size_floating(),     start=lazy.window.get_size(True), finish=lazy.window.reset_mouse_focus()),
@@ -230,7 +253,12 @@ layouts = [
     #layout.Floating(border_focus=theme['floatfocus'], border_normal=theme['floatblur']),
 ]
 
-widget_defaults = dict(font='Arial', fontsize=13, padding=2)
+dpi = get_primary_display_dpi()
+barheight = max(18, int(round(dpi * 0.11, 0)))
+fontsize = barheight - 4
+iconsize = barheight - 4
+
+widget_defaults = dict(font='Arial', fontsize=fontsize, padding=2)
 
 def get_net_diag():
     try:
@@ -260,6 +288,8 @@ def get_dirty_mem_M():
     return "?"
 
 def init_widgets():
+    global fontsize
+    global iconsize
     widgets = [
             widget.GroupBox(disable_drag=True,
                        use_mouse_wheel=False,
@@ -269,8 +299,8 @@ def init_widgets():
                        other_current_screen_border=theme['foreground'],
                        other_screen_border=theme['screenblur'],
                        urgent_alert_method='text',
-                       fontsize=9,
-                       borderwidth=1,
+                       fontsize=fontsize,
+                       borderwidth=2,
                       ),
             widget.WindowName(foreground=theme['text'], for_current_screen=True),
             widget.Prompt(foreground=theme['textprompt'],
@@ -283,16 +313,7 @@ def init_widgets():
                          ),
         ]
     hostname = socket.gethostname()
-    if "proton" == hostname:
-        widgets += [
-                widget.Battery(battery_name='BATC',
-                               foreground=theme['textbattery'],
-                               charge_char='+',
-                               discharge_char='–',
-                               format='{char}{percent:2.0%} {hour:d}:{min:02d} ',
-                              ),
-            ]
-    elif "aluminumbar" == hostname:
+    if hostname in ["aluminumbar", "onyx"]:
         widgets += [
                 widget.Battery(battery_name='BAT0',
                                foreground=theme['textbattery'],
@@ -305,11 +326,11 @@ def init_widgets():
             widget.GenPollText(func=get_net_diag, update_interval=30, foreground='#880088'),
             widget.GenPollText(func=get_dirty_mem_M, update_interval=15, foreground='#ff4400'),
             widget.Clock(format='%Y-%m-%d %a %H:%M'),
-            widget.Systray(icon_size=12),
+            widget.Systray(icon_size=iconsize),
         ]
     return widgets
 
-screens = [ Screen(top=bar.Bar(init_widgets(), 18)) ]
+screens = [ Screen(top=bar.Bar(init_widgets(), barheight)) ]
 
 dgroups_key_binder = None
 dgroups_app_rules = []
