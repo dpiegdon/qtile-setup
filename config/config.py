@@ -254,9 +254,9 @@ layouts = [
 ]
 
 dpi = get_primary_display_dpi()
-barheight = max(18, int(round(dpi * 0.11, 0)))
-fontsize = barheight - 4
-iconsize = barheight - 4
+barheight = max(15, int(round(dpi * 0.11, 0)))
+fontsize = barheight - 3
+iconsize = barheight - 3
 
 widget_defaults = dict(font='Arial', fontsize=fontsize, padding=2)
 
