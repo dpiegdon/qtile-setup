@@ -212,6 +212,7 @@ for _fkey in [  "XF86MonBrightnessDown",
                 "XF86AudioPlay",
                 "XF86AudioNext",
                 "XF86AudioMute",
+                "XF86AudioMicMute",
                 "XF86AudioLowerVolume",
                 "XF86AudioRaiseVolume",
                 "XF86Eject"
