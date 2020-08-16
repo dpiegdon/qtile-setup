@@ -52,6 +52,7 @@ redTheme = {
         'text':        '#c0c0c0',
         'textprompt':  '#44ff44',
         'textbattery': '#00aaaa',
+        'highlight_method': 'block',
     }
 
 greenTheme = {
@@ -59,13 +60,14 @@ greenTheme = {
         'blur':        '#880088',
         'floatfocus':  '#00ff88',
         'floatblur':   '#880044',
-        'rootwindow':  '#004400',
+        'rootwindow':  '#003300',
         'foreground':  '#00cc00',
         'screenblur':  '#770077',
         'background':  '#000000',
         'text':        '#c0c0c0',
         'textprompt':  '#ff44ff',
         'textbattery': '#aa00aa',
+        'highlight_method': 'block',
     }
 
 blueTheme = {
@@ -80,6 +82,7 @@ blueTheme = {
         'text':        '#c0c0c0',
         'textprompt':  '#44ff44',
         'textbattery': '#00aaaa',
+        'highlight_method': 'block',
     }
 
 yellowTheme = {
@@ -94,9 +97,25 @@ yellowTheme = {
         'text':        '#c0c0c0',
         'textprompt':  '#ff8866',
         'textbattery': '#00aaaa',
+        'highlight_method': 'block',
     }
 
-theme = redTheme
+fancyYBGtheme = {
+        'focus':       '#ffee00',
+        'blur':        '#003366',
+        'floatfocus':  '#ff9900',
+        'floatblur':   '#0077ff',
+        'rootwindow':  '#002200',
+        'foreground':  '#776600',
+        'screenblur':  '#005588',
+        'background':  '#000000',
+        'text':        '#c0c0c0',
+        'textprompt':  '#ff8866',
+        'textbattery': '#00aaaa',
+        'highlight_method': 'block',
+    }
+
+theme = fancyYBGtheme
 
 def move_window_to_screen(screen):
     def cmd(qtile):
@@ -256,8 +275,8 @@ layouts = [
 
 dpi = get_primary_display_dpi()
 barheight = max(15, int(round(dpi * 0.11, 0)))
-fontsize = barheight - 3
-iconsize = barheight - 3
+fontsize = barheight - 2
+iconsize = barheight - 2
 
 widget_defaults = dict(font='Arial', fontsize=fontsize, padding=2)
 
@@ -294,7 +313,8 @@ def init_widgets():
     widgets = [
             widget.GroupBox(disable_drag=True,
                        use_mouse_wheel=False,
-                       highlight_method='block',
+                       highlight_method=theme['highlight_method'],
+                       hide_unused=False,
                        this_current_screen_border=theme['foreground'],
                        this_screen_border=theme['screenblur'],
                        other_current_screen_border=theme['foreground'],
