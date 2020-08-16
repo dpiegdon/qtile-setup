@@ -7,8 +7,7 @@ xrdb ~/.Xdefaults
 # disable screensaver
 xset s off
 xset -dpms
-[ -e ~/bin/xscreenlayout ] && ~/bin/xscreenlayout
-sleep 1
+[ -e ~/bin/xscreenlayout ] && ~/bin/xscreenlayout && sleep 1
 (~/bin/hid-reset &)
 
 # check or pick display manager {{{
@@ -29,7 +28,7 @@ export WINDOWMANAGER
 
 # }}}
 
-# in case of xmonad or qtile, start all the accompanying programs {{{
+# start all the accompanying programs {{{
 
 start_screenlocker() {
 	which xautolock > /dev/null 2>&1 && (
@@ -49,13 +48,6 @@ start_screenlocker() {
 }
 
 case `basename "$WINDOWMANAGER"` in
-	xmonad)
-		(trayer --edge top --align left --SetDockType true --SetPartialStrut true --expand true --widthtype pixel --width 71 --margin 1008 --transparent true --tint 0x220000 --height 12 &)
-		start_screenlocker
-		( (sleep 3; exec ~/bin/update-background)&)
-		(exec dunst&)
-		( (sleep 3; exec blueman-applet) &)
-		;;
 	*)
 		echo $WINDOWMANAGER | grep '\<qtile\>' > /dev/null 2>&1 && {
 			start_screenlocker
