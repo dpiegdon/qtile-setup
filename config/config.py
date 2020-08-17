@@ -24,7 +24,7 @@ def get_primary_display_dpi():
     xo = subprocess.run("xrandr", stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:
         for line in xo.stdout.decode().split('\n'):
-            m = re.match(r'([^ ]*) connected primary ([0-9]*)x([0-9]*)\+0\+0 \(.*\) ([0-9]*)mm x ([0-9]*)mm', line)
+            m = re.match(r'([^ ]*) connected primary ([0-9]*)x([0-9]*)\+[0-9]*\+[0-9]* \(.*\) ([0-9]*)mm x ([0-9]*)mm', line)
             if m is not None:
                 #display = m.group(1)
                 res_x = int(m.group(2))
