@@ -24,18 +24,17 @@ def get_primary_display_dpi():
     xo = subprocess.run("xrandr", stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:
         for line in xo.stdout.decode().split('\n'):
-            m = re.match(r'([^ ]*) connected primary ([0-9]*)x([0-9]*)\+[0-9]*\+[0-9]* \(.*\) ([0-9]*)mm x ([0-9]*)mm', line)
+            m = re.match(r'([^ ]*) connected primary ([0-9]*)x([0-9]*)\+[0-9]*\+[0-9]* ([a-z]* ?)\(.*\) ([0-9]*)mm x ([0-9]*)mm', line)
             if m is not None:
                 #display = m.group(1)
                 res_x = int(m.group(2))
                 res_y = int(m.group(3))
-                size_x_mm = int(m.group(4))
-                size_y_mm = int(m.group(5))
+                size_x_mm = int(m.group(5))
+                size_y_mm = int(m.group(6))
                 res_dia = math.sqrt(res_x**2 + res_y**2)
                 size_dia_inch = math.sqrt(size_x_mm**2 + size_y_mm**2) / 25.4
                 dpi = res_dia / size_dia_inch
                 return int(round(dpi, 0))
-                
     except Exception:
         pass
     return 100 # sane default
