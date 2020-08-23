@@ -221,21 +221,24 @@ for _modifier in [ ("", "NONE"),
             _mod.append(_modifier[0])
         keys.append( Key(_mod, _fkey_name, lazy.spawn("special_keys {} {}".format(_fkey_name, _modifier[1])) ) )
 
-for _fkey in [  "XF86MonBrightnessDown",
-                "XF86MonBrightnessUp",
-                "XF86LaunchA",
-                "XF86LaunchB",
-                "XF86KbdBrightnessDown",
-                "XF86KbdBrightnessUp",
-                "XF86AudioPrev",
-                "XF86AudioPlay",
-                "XF86AudioNext",
-                "XF86AudioMute",
-                "XF86AudioMicMute",
-                "XF86AudioLowerVolume",
-                "XF86AudioRaiseVolume",
-                "XF86Eject"
-                ]:
+for _fkey in [ "XF86MonBrightnessDown"
+             , "XF86MonBrightnessUp"
+             , "XF86LaunchA"
+             , "XF86LaunchB"
+             , "XF86KbdBrightnessDown"
+             , "XF86KbdBrightnessUp"
+             , "XF86AudioPrev"
+             , "XF86AudioNext"
+             , "XF86AudioPlay"
+             , "XF86AudioStop"
+             , "XF86AudioMute"
+             , "XF86AudioMicMute"
+             , "XF86AudioLowerVolume"
+             , "XF86AudioRaiseVolume"
+             , "XF86Favorites"
+             , "XF86Eject"
+             , "XF86Display"
+             ]:
     keys.append( Key([], _fkey, lazy.spawn("special_keys {} NONE".format(_fkey))) )
 
 groups = [Group(i) for i in "1234567890-="]
