@@ -208,11 +208,12 @@ keys = [
 ]
 
 # map function keys to special_keys script
-for _modifier in [ ("", "NONE"),
-                   (shiftkey, "SHIFT"),
-                   (controlkey, "CTRL"),
-                   (altkey, "ALT"),
-                   (modeswitchkey, "MODESWITCH") ]:
+for _modifier in ( ("", "NONE")
+                 , (shiftkey, "SHIFT")
+                 , (controlkey, "CTRL")
+                 , (altkey, "ALT")
+                 , (modeswitchkey, "MODESWITCH")
+                 ):
     for _fkey in range(1,13):
         _fkey_name = "F{}".format(_fkey)
         _mod = [modkey]
@@ -220,7 +221,7 @@ for _modifier in [ ("", "NONE"),
             _mod.append(_modifier[0])
         keys.append( Key(_mod, _fkey_name, lazy.spawn("special_keys {} {}".format(_fkey_name, _modifier[1])) ) )
 
-for _fkey in [ "XF86MonBrightnessDown"
+for _fkey in ( "XF86MonBrightnessDown"
              , "XF86MonBrightnessUp"
              , "XF86LaunchA"
              , "XF86LaunchB"
@@ -237,7 +238,7 @@ for _fkey in [ "XF86MonBrightnessDown"
              , "XF86Favorites"
              , "XF86Eject"
              , "XF86Display"
-             ]:
+             ):
     keys.append( Key([], _fkey, lazy.spawn("special_keys {} NONE".format(_fkey))) )
 
 groups = [Group(i) for i in "1234567890-="]
@@ -336,7 +337,7 @@ def init_widgets():
                          ),
         ]
     hostname = socket.gethostname()
-    if hostname in ["aluminumbar", "onyx"]:
+    if hostname in {"onyx"}:
         widgets += [
                 widget.Battery(battery_name='BAT0',
                                foreground=theme['textbattery'],
