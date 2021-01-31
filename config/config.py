@@ -104,7 +104,7 @@ fancyYBGtheme = {
         'blur':        '#003366',
         'floatfocus':  '#ff9900',
         'floatblur':   '#0077ff',
-        'rootwindow':  '#003300',
+        'rootwindow':  '#330033',
         'foreground':  '#998800',
         'screenblur':  '#005588',
         'background':  '#000000',
