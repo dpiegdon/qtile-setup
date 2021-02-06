@@ -10,7 +10,7 @@
 
 from libqtile import layout, bar, hook
 from libqtile.command import lazy
-from libqtile.config import Screen, Group
+from libqtile.config import Screen, Group, ScratchPad, DropDown
 
 import config_funcs
 import config_colorthemes
@@ -35,7 +35,12 @@ cursor_warp = False
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 
-groups = [Group(i) for i in "1234567890-="]
+groups = [Group(i) for i in "1234567890-="] + [
+    ScratchPad("d", [DropDown("d", "/usr/bin/xterm -u8",
+                              opacity=0.80, height=0.70, width=0.80, x=0.10, y=0.00)]),
+    ScratchPad("f", [DropDown("f", "/usr/bin/xterm -u8 -e ~/.qtile/qtile/bin/qshell",
+                              opacity=0.80, height=0.40, width=0.80, x=0.10, y=0.60)]),
+    ]
 
 keys, mouse = config_periphery.get_keys_and_mouse(groups)
 
