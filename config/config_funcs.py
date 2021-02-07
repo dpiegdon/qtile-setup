@@ -26,6 +26,12 @@ def move_window_to_group(group):
     return cmd
 
 
+def next_window_to_front_if_float(qtile):
+    qtile.current_group.cmd_next_window()
+    if qtile.current_window.floating:
+        qtile.current_window.cmd_bring_to_front()
+
+
 def get_primary_display_dpi():
     xo = subprocess.run("xrandr", stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:

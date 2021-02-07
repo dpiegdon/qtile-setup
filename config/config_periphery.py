@@ -73,7 +73,8 @@ def get_keys_and_mouse(groups):
 
         # Group
 
-        Key(mod, "Tab",                lazy.group.next_window()),
+        Key(mod, "Tab",                lazy.function(config_funcs.next_window_to_front_if_float)),
+        Key(mod+shft, "Tab",           lazy.group.next_window()),
     ]
     _gn2k = lambda grp: { '`': "grave", '-': "minus", '=': "equal" }.get(grp.name, grp.name) # group-name to key
     keys += [Key(mod, _gn2k(grp),      lazy.group[grp.name].dropdown_toggle(grp.name))            for grp in groups if isinstance(grp, ScratchPad)]
@@ -84,7 +85,6 @@ def get_keys_and_mouse(groups):
         # Window
 
         Key(mod, "t",                  lazy.window.toggle_floating()),
-        Key(mod+shft, "Tab",           lazy.window.bring_to_front()),
         Key(mod, "q",                  lazy.window.kill()),
 
         # Other
