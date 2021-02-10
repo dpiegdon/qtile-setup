@@ -13,7 +13,7 @@ def move_window_to_screen(screen_index):
         w = qtile.current_window
         if w is not None:
             w.floating = False
-            w.togroup(qtile.screens[screen_index].group.name)
+            w.toscreen(screen_index)
     return cmd
 
 
