@@ -8,7 +8,7 @@
 #   WIN+CTRL+R  to restart qtile
 #   WIN+R       to execute something
 
-from libqtile import layout, bar, hook
+from libqtile import layout, bar
 from libqtile.command import lazy
 from libqtile.config import Screen, Group, ScratchPad, DropDown
 
