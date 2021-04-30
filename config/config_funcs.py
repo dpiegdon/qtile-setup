@@ -49,8 +49,8 @@ def get_primary_display_dpi():
                 return int(round(dpi, 0))
     except Exception as e:
         print("Error to find DPI: {}".format(e))
-        print("defaulting to 100")
-        return 100
+    print("DPI defaulting to 100")
+    return 100
 
 
 def get_net_diag():
@@ -84,5 +84,4 @@ def get_dirty_mem_M():
 
 
 def exec_poststart(theme):
-    # set root-window background
     subprocess.call(['xsetroot', '-solid', theme['rootwindow']])
