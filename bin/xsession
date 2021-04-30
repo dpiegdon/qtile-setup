@@ -7,7 +7,7 @@ xrdb ~/.Xdefaults
 # disable screensaver
 xset s off
 xset -dpms
-[ -e ~/bin/xscreenlayout ] && ~/bin/xscreenlayout && sleep 1
+~/.qtile/bin/displace
 (~/bin/hid-reset &)
 
 # check or pick display manager {{{

@@ -12,6 +12,7 @@ dependencies: (for debian)
 		python3-setuptools
 		python3-wheel
 		python3-xcffib
+		python3-xlib
 		xautolock
 
 if python packages are unavailable in your distro,
@@ -24,6 +25,7 @@ typical setup:
 		ln -s ~/.qtile/bin/xsession ~/.xsession
 		ln -s ~/.qtile/bin/xsession ~/.xinitrc
 		ln -s ~/.qtile/bin/xlock ~/bin/
+		ln -s ~/.qtile/bin/displace ~/bin/
 		ln -s ~/.qtile/bin/xautolock-force ~/bin/
 		cd .qtile/qtile
 
