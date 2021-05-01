@@ -7,6 +7,8 @@ import re
 import math
 import os
 
+from libqtile import hook
+
 
 def move_window_to_screen(screen_index):
     def cmd(qtile):
@@ -81,6 +83,13 @@ def get_dirty_mem_M():
     except Exception as e:
         print("Error identifying dirty memory: {}".format(e))
         return "E"
+
+
+@hook.subscribe.client_new
+def float_dialogs(window):
+    if(window.window.get_wm_type() == 'dialog'
+        or window.window.get_wm_transient_for()):
+        window.floating = True
 
 
 def exec_poststart(theme):
