@@ -3,11 +3,11 @@
 
 cd
 
+~/.qtile/bin/displace
 xrdb ~/.Xdefaults
 # disable screensaver
 xset s off
 xset -dpms
-~/.qtile/bin/displace
 (~/bin/hid-reset &)
 
 # check or pick display manager {{{
