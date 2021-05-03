@@ -6,4 +6,4 @@
 	url = https://github.com/qtile/qtile-examples.git
 [submodule "displace"]
 	path = displace
-	url = git@github.com:dpiegdon/displace.git
+	url = https://github.com/dpiegdon/displace.git
