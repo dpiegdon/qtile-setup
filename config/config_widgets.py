@@ -46,8 +46,8 @@ def init_widgets(theme, fontsize, iconsize):
             widget.GenPollText(func=config_funcs.get_net_diag, update_interval=30, foreground='#880088'),
             widget.GenPollText(func=config_funcs.get_dirty_mem_M, update_interval=15, foreground='#ff4400'),
             widget.Clock(format='%a %Y-%m-%d'),
-            widget.Clock(format='%H:%M %Z', timezone="EST", foreground='#0a5796'),
-            widget.Clock(format='%H:%M %Z', foreground='#ffbbbb'),
+            widget.Clock(format='%H:%M %Z', foreground='#ff9999'),
+            widget.Clock(format='%H:%M %Z', timezone="EST5EDT", foreground='#444477'),
             widget.Systray(icon_size=iconsize),
         ]
     return widgets
