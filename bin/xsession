@@ -3,7 +3,7 @@
 
 cd
 
-~/.qtile/bin/displace -a
+~/.qtile/bin/displace -af
 xrdb ~/.Xdefaults
 # disable screensaver
 xset s off
