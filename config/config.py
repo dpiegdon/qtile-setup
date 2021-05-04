@@ -46,9 +46,9 @@ keys, mouse = config_periphery.get_keys_and_mouse(groups)
 
 layouts = [
     layout.Columns(border_focus=_theme['focus'], border_normal=_theme['blur'], grow_amount=2),
+    layout.Max(),
     #layout.MonadTall(border_focus=_theme['focus'], border_normal=_theme['blur']),
     #layout.Tile(ratio=0.5, border_focus=_theme['focus'], border_normal=_theme['blur']),
-    #layout.Max(),
     #layout.Floating(border_focus=_theme['floatfocus'], border_normal=_theme['floatblur']),
 ]
 

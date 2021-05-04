@@ -22,6 +22,7 @@ def init_widgets(theme, fontsize, iconsize):
                        fontsize=fontsize,
                        borderwidth=2,
                       ),
+            widget.CurrentLayoutIcon(foreground='#111111'),
             widget.WindowName(foreground=theme['text'], for_current_screen=True),
             widget.Prompt(foreground=theme['textprompt'],
                           cursor_color=theme['foreground'],
@@ -33,7 +34,7 @@ def init_widgets(theme, fontsize, iconsize):
                          ),
         ]
     hostname = socket.gethostname()
-    if hostname in {"onyx"}:
+    if hostname in ("onyx", ):
         widgets += [
                 widget.Battery(battery_name='BAT0',
                                foreground=theme['textbattery'],
