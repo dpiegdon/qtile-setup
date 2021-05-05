@@ -50,6 +50,47 @@ def next_window_to_front_if_float(qtile):
         qtile.current_window.cmd_bring_to_front()
 
 
+def mute_window(qtile):
+    if not qtile.current_window:
+        return
+
+    pid = qtile.current_window.window.get_property("_NET_WM_PID", unpack=int)[0]
+    exe = os.readlink("/proc/{}/exe".format(pid))
+
+    sources = []
+    srcindex = None
+    srcdisplay = None
+    srcmuted = None
+    srcexe = None
+    srcpid = None
+    pacmd = subprocess.run(["pacmd", "list-sink-inputs"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    for line in pacmd.stdout.decode().split('\n') + ["index: FINI"]:
+        line = line.lstrip(" \t")
+        if line.startswith("index:"):
+            if srcindex is not None:
+                if srcdisplay is not None:
+                    if srcexe == exe:
+                        sources.append((srcindex, srcmuted))
+            try:
+                srcindex = int(line.split()[1])
+            except (IndexError, ValueError):
+                srcindex = None
+            srcdisplay = None
+            srcpid = None
+            srcexe = None
+            srcmuted = None
+        elif line.startswith("window.x11.display"):
+            srcdisplay = line.split()[2]
+        elif line.startswith("application.process.id"):
+            srcpid = int(line.split()[2].lstrip('"').rstrip('"'))
+            srcexe = os.readlink("/proc/{}/exe".format(srcpid))
+        elif line.startswith("muted:"):
+            srcmuted = ("yes" == line.split()[1])
+
+    for (src, ismuted) in sources:
+        os.system("pacmd set-sink-input-mute {} {}".format(src, "0" if ismuted else "1"))
+
+
 def get_primary_display_dpi():
     xo = subprocess.run("xrandr", stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:
