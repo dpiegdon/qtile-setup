@@ -50,45 +50,75 @@ def next_window_to_front_if_float(qtile):
         qtile.current_window.cmd_bring_to_front()
 
 
-def mute_window(qtile):
-    if not qtile.current_window:
-        return
-
-    pid = qtile.current_window.window.get_property("_NET_WM_PID", unpack=int)[0]
-    exe = os.readlink("/proc/{}/exe".format(pid))
-
-    sources = []
-    srcindex = None
-    srcdisplay = None
-    srcmuted = None
-    srcexe = None
-    srcpid = None
-    pacmd = subprocess.run(["pacmd", "list-sink-inputs"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    for line in pacmd.stdout.decode().split('\n') + ["index: FINI"]:
-        line = line.lstrip(" \t")
-        if line.startswith("index:"):
-            if srcindex is not None:
-                if srcdisplay is not None:
-                    if srcexe == exe:
-                        sources.append((srcindex, srcmuted))
-            try:
-                srcindex = int(line.split()[1])
-            except (IndexError, ValueError):
-                srcindex = None
-            srcdisplay = None
-            srcpid = None
-            srcexe = None
-            srcmuted = None
-        elif line.startswith("window.x11.display"):
-            srcdisplay = line.split()[2]
-        elif line.startswith("application.process.id"):
-            srcpid = int(line.split()[2].lstrip('"').rstrip('"'))
-            srcexe = os.readlink("/proc/{}/exe".format(srcpid))
-        elif line.startswith("muted:"):
-            srcmuted = ("yes" == line.split()[1])
-
-    for (src, ismuted) in sources:
+def window_audio(what):
+    def mute(src, ismuted, lvol, rvol):
+        print("mute {} {} {} {}".format(src, ismuted, lvol, rvol), flush=True)
         os.system("pacmd set-sink-input-mute {} {}".format(src, "0" if ismuted else "1"))
+    def reset(src, ismuted, lvol, rvol):
+        os.system("pacmd set-sink-input-mute {} 0".format(src))
+        os.system("pacmd set-sink-input-volume {} 65536".format(src))
+    def up(src, ismuted, lvol, rvol):
+        newvol = int((lvol + rvol) / 2 + 2000)
+        os.system("pacmd set-sink-input-volume {} {}".format(src, newvol))
+    def down(src, ismuted, lvol, rvol):
+        newvol = int((lvol + rvol) / 2 - 2000)
+        os.system("pacmd set-sink-input-volume {} {}".format(src, newvol))
+    whats = {"mute": mute, "reset": reset, "up": up, "down": down}
+
+    if what not in whats:
+        raise ValueError("Unknown audio operation: {}".format(what))
+
+    action = whats[what]
+
+    def fun(qtile):
+        if not qtile.current_window:
+            return
+
+        pid = qtile.current_window.window.get_property("_NET_WM_PID", unpack=int)[0]
+        exe = os.readlink("/proc/{}/exe".format(pid))
+
+        sources = []
+        srcdisplay = None
+        srcexe = None
+        srcindex = None
+        srcmuted = None
+        srcpid = None
+        srclvol = None
+        srcrvol = None
+        pacmd = subprocess.run(["pacmd", "list-sink-inputs"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        for line in pacmd.stdout.decode().split('\n') + ["index: FINI"]:
+            line = line.lstrip(" \t")
+            if line.startswith("index:"):
+                if srcindex is not None:
+                    if srcdisplay is not None:
+                        if srcexe == exe:
+                            sources.append((srcindex, srcmuted, srclvol, srcrvol))
+                try:
+                    srcindex = int(line.split()[1])
+                except (IndexError, ValueError):
+                    srcindex = None
+                srcdisplay = None
+                srcexe = None
+                srcmuted = None
+                srcpid = None
+                srclvol = None
+                srcrvol = None
+            elif line.startswith("window.x11.display"):
+                srcdisplay = line.split()[2]
+            elif line.startswith("application.process.id"):
+                srcpid = int(line.split()[2].lstrip('"').rstrip('"'))
+                srcexe = os.readlink("/proc/{}/exe".format(srcpid))
+            elif line.startswith("muted:"):
+                srcmuted = ("yes" == line.split()[1])
+            elif line.startswith("volume:"):
+                line = line.split()
+                srclvol = int(line[2])
+                srcrvol = int(line[9])
+
+        for source in sources:
+            action(*source)
+
+    return fun
 
 
 def get_primary_display_dpi():

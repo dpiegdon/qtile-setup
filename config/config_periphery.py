@@ -87,7 +87,10 @@ def get_keys_and_mouse(groups):
 
         Key(mod, "t",                  lazy.window.toggle_floating()),
         Key(mod, "q",                  lazy.window.kill()),
-        Key(mod, "m",                  lazy.function(config_funcs.mute_window)),
+        Key(mod+shft, "m",             lazy.function(config_funcs.window_audio("mute"))),
+        Key(mod+shft, "comma",         lazy.function(config_funcs.window_audio("down"))),
+        Key(mod+shft, "period",        lazy.function(config_funcs.window_audio("up"))),
+        Key(mod+shft, "slash",         lazy.function(config_funcs.window_audio("reset"))),
 
         # Other
 
