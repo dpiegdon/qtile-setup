@@ -28,6 +28,22 @@ def move_window_to_group(group):
     return cmd
 
 
+def swap_active_screen_with(group):
+    def cmd(qtile):
+        current = qtile.current_group
+        other = qtile.groups_map[group.name]
+        if other is not current:
+            screen = qtile.current_screen.index
+            current_windows = [w for w in current.windows]
+            other_windows = [w for w in other.windows]
+            for w in other_windows:
+                w.togroup(current.name)
+            for w in current_windows:
+                w.togroup(other.name)
+            qtile.focus_screen(screen)
+    return cmd
+
+
 def next_window_to_front_if_float(qtile):
     qtile.current_group.cmd_next_window()
     if qtile.current_window.floating:

@@ -80,6 +80,7 @@ def get_keys_and_mouse(groups):
     keys += [Key(mod, _gn2k(grp),      lazy.group[grp.name].dropdown_toggle(grp.name))            for grp in groups if isinstance(grp, ScratchPad)]
     keys += [Key(mod, _gn2k(grp),      lazy.group[grp.name].toscreen(toggle=False))               for grp in groups if not isinstance(grp, ScratchPad)]
     keys += [Key(mod+shft, _gn2k(grp), lazy.function(config_funcs.move_window_to_group(grp)))     for grp in groups if not isinstance(grp, ScratchPad)]
+    keys += [Key(mod+ctrl, _gn2k(grp), lazy.function(config_funcs.swap_active_screen_with(grp)))  for grp in groups if not isinstance(grp, ScratchPad)]
     keys += [
 
         # Window
