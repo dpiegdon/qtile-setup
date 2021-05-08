@@ -2,11 +2,27 @@
 # coding: utf-8
 # vim: expandtab tabstop=4 shiftwidth=4 softtabstop=4 colorcolumn=100
 
+import libqtile
 from libqtile import widget
 
 import config_funcs
 
 import socket
+
+class LayoutIcon(widget.CurrentLayoutIcon):
+    """Like CurrentLayoutIcon, but shows layout for *current* group, not screen of this bar. """
+    def _setup_hooks(self):
+        def hook_update_layout(*args, **kwargs):
+            g = libqtile.qtile.current_group
+            layout = g.layouts[g.current_layout]
+            new_layout = layout.name
+            if self.current_layout != new_layout:
+                self.current_layout = new_layout
+                self.bar.draw()
+
+        libqtile.hook.subscribe.layout_change(hook_update_layout)
+        libqtile.hook.subscribe.current_screen_change(hook_update_layout)
+
 
 def init_widgets(theme, fontsize, iconsize):
     widgets = [
@@ -22,7 +38,7 @@ def init_widgets(theme, fontsize, iconsize):
                        fontsize=fontsize,
                        borderwidth=2,
                       ),
-            widget.CurrentLayoutIcon(background=theme['rootwindow']),
+            LayoutIcon(background=theme['rootwindow']),
             widget.WindowName(foreground=theme['text'], background=theme['rootwindow'], for_current_screen=True),
             widget.Prompt(foreground=theme['textprompt'],
                           cursor_color=theme['foreground'],
