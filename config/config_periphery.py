@@ -105,6 +105,8 @@ def get_keys_and_mouse(groups):
         Key(mod+mswitch, "Escape",     lazy.spawn("xautolock -toggle")),
         Key(mod, "s",                  lazy.spawn("/usr/bin/gnome-screenshot")),
         Key(mod+shft, "s",             lazy.spawn("/usr/bin/gnome-screenshot --window")),
+
+        Key([], "XF86Display",         lazy.spawn("displace -af")),
     ]
 
     # Map function keys to special_keys script
@@ -137,7 +139,6 @@ def get_keys_and_mouse(groups):
                  , "XF86AudioRaiseVolume"
                  , "XF86Favorites"
                  , "XF86Eject"
-                 , "XF86Display"
                  ):
         keys.append( Key([], _fkey, lazy.spawn("special_keys {} NONE".format(_fkey))) )
 
