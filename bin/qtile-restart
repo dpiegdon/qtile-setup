@@ -1,2 +1,2 @@
 #!/bin/sh
-~/.qtile/qtile/bin/qshell -c 'restart()'
+~/.qtile/qtile/bin/qtile shell -c 'restart()'
