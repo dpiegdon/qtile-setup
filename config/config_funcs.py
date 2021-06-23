@@ -51,6 +51,7 @@ def next_window_to_front_if_float(qtile):
 
 
 def window_audio(what):
+    # obsolete when using pipewire, needs to be redone then.
     def mute(src, ismuted, lvol, rvol):
         print("mute {} {} {} {}".format(src, ismuted, lvol, rvol), flush=True)
         os.system("pacmd set-sink-input-mute {} {}".format(src, "0" if ismuted else "1"))
