@@ -148,12 +148,6 @@ def get_keys_and_mouse(groups):
         Drag(mod, "Button1",           lazy.window.set_position_floating(), start=lazy.window.get_position()),
         Drag(mod+shft, "Button1",      lazy.window.set_size_floating(),     start=lazy.window.get_size()),
         Drag(mod, "Button3",           lazy.window.set_size_floating(),     start=lazy.window.get_size()),
-
-        Click([], "Button9",           lazy.spawn("special_keys MOUSE9 NONE")),
-        Click(shft, "Button9",         lazy.spawn("special_keys MOUSE9 SHIFT")),
-        Click(ctrl, "Button9",         lazy.spawn("special_keys MOUSE9 CTRL")),
-        Click(alt, "Button9",          lazy.spawn("special_keys MOUSE9 ALT")),
-        Click(mswitch, "Button9",      lazy.spawn("special_keys MOUSE9 MODESWITCH")),
     ]
 
     return keys, mouse
