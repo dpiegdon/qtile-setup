@@ -51,25 +51,23 @@ def next_window_to_front_if_float(qtile):
 
 
 def window_audio(what):
-    # obsolete when using pipewire, needs to be redone then.
     def mute(src, ismuted, lvol, rvol):
-        print("mute {} {} {} {}".format(src, ismuted, lvol, rvol), flush=True)
-        os.system("pacmd set-sink-input-mute {} {}".format(src, "0" if ismuted else "1"))
+        os.system("pactl set-sink-input-mute {} {}".format(src, "0" if ismuted else "1"))
     def reset(src, ismuted, lvol, rvol):
-        os.system("pacmd set-sink-input-mute {} 0".format(src))
-        os.system("pacmd set-sink-input-volume {} 65536".format(src))
+        os.system("pactl set-sink-input-mute {} 0".format(src))
+        os.system("pactl set-sink-input-volume {} 65536".format(src))
     def up(src, ismuted, lvol, rvol):
         newvol = int((lvol + rvol) / 2 + 2000)
-        os.system("pacmd set-sink-input-volume {} {}".format(src, newvol))
+        os.system("pactl set-sink-input-volume {} {}".format(src, newvol))
     def down(src, ismuted, lvol, rvol):
         newvol = int((lvol + rvol) / 2 - 2000)
-        os.system("pacmd set-sink-input-volume {} {}".format(src, newvol))
-    whats = {"mute": mute, "reset": reset, "up": up, "down": down}
+        os.system("pactl set-sink-input-volume {} {}".format(src, newvol))
+    audio_funs = {"mute": mute, "reset": reset, "up": up, "down": down}
 
-    if what not in whats:
+    if what not in audio_funs:
         raise ValueError("Unknown audio operation: {}".format(what))
 
-    action = whats[what]
+    action = audio_funs[what]
 
     def fun(qtile):
         if not qtile.current_window:
@@ -86,16 +84,16 @@ def window_audio(what):
         srcpid = None
         srclvol = None
         srcrvol = None
-        pacmd = subprocess.run(["pacmd", "list-sink-inputs"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        for line in pacmd.stdout.decode().split('\n') + ["index: FINI"]:
+        sink_input_list = subprocess.run(["pactl", "list", "sink-inputs"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        for line in sink_input_list.stdout.decode().split('\n') + ["Sink Input FINI"]:
             line = line.lstrip(" \t")
-            if line.startswith("index:"):
+            if line.startswith("Sink Input"):
                 if srcindex is not None:
                     if srcdisplay is not None:
                         if srcexe == exe:
                             sources.append((srcindex, srcmuted, srclvol, srcrvol))
                 try:
-                    srcindex = int(line.split()[1])
+                    srcindex = int(line.split()[2].lstrip("#"))
                 except (IndexError, ValueError):
                     srcindex = None
                 srcdisplay = None
@@ -105,13 +103,13 @@ def window_audio(what):
                 srclvol = None
                 srcrvol = None
             elif line.startswith("window.x11.display"):
-                srcdisplay = line.split()[2]
+                srcdisplay = line.split()[2].lstrip('"').rstrip('"')
             elif line.startswith("application.process.id"):
                 srcpid = int(line.split()[2].lstrip('"').rstrip('"'))
                 srcexe = os.readlink("/proc/{}/exe".format(srcpid))
-            elif line.startswith("muted:"):
+            elif line.startswith("muted:") or line.startswith("Mute:"):
                 srcmuted = ("yes" == line.split()[1])
-            elif line.startswith("volume:"):
+            elif line.startswith("volume:") or line.startswith("Volume:"):
                 line = line.split()
                 srclvol = int(line[2])
                 srcrvol = int(line[9])
@@ -138,7 +136,7 @@ def get_primary_display_dpi():
                 dpi = res_dia / size_dia_inch
                 return int(round(dpi, 0))
     except Exception as e:
-        print("Error to find DPI: {}".format(e))
+        print("Error to find DPI: {}".format(e), flush=True)
     print("DPI defaulting to 100")
     return 100
 
@@ -169,7 +167,7 @@ def get_dirty_mem_M():
                     return "{}M".format(int(dirtymem_K / 1024))
         return "?"
     except Exception as e:
-        print("Error identifying dirty memory: {}".format(e))
+        print("Error identifying dirty memory: {}".format(e), flush=True)
         return "E"
 
 
