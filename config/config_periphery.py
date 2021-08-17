@@ -66,7 +66,7 @@ def get_keys_and_mouse(groups):
         Key(mod+shft, "Left",          lazy.screen.prev_group(skip_managed=True)),
         Key(mod+shft, "Right",         lazy.screen.next_group(skip_managed=True)),
     ]
-    _screenkeys = "wer"
+    _screenkeys = "wert"
     keys += [Key(mod, key,             lazy.to_screen(screen))                                    for screen, key in enumerate(_screenkeys)]
     keys += [Key(mod+shft, key,        lazy.function(config_funcs.move_window_to_screen(screen))) for screen, key in enumerate(_screenkeys)]
     keys += [
@@ -85,7 +85,7 @@ def get_keys_and_mouse(groups):
 
         # Window
 
-        Key(mod, "t",                  lazy.window.toggle_floating()),
+        Key(mod, "g",                  lazy.window.toggle_floating()),
         Key(mod, "q",                  lazy.window.kill()),
         Key(mod+shft, "m",             lazy.function(config_funcs.window_audio("mute"))),
         Key(mod+shft, "comma",         lazy.function(config_funcs.window_audio("down"))),
