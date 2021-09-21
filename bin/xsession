@@ -32,18 +32,20 @@ export WINDOWMANAGER
 
 start_screenlocker() {
 	which xautolock > /dev/null 2>&1 && (
-		# laptop?
 		KILLEROPT=""
 		BATTERYCOUNT=$(ls -1 /sys/class/power_supply/ | grep BAT > /dev/null 2>&1 | wc -l)
 		[ $BATTERYCOUNT -ge 1 ] && KILLEROPT='-killtime 1 -killer "systemctl suspend"'
 
 		xautolock -locker ~/.qtile/bin/xlock -time 3 \
-			-notify 15 -notifier '/usr/bin/notify-send -u critical -t 15000 -- LOCKING SHORTLY' \
+			-notify 15 -notifier '/usr/bin/notify-send -u critical -t 14000 -- LOCKING SHORTLY' \
 			$KILLEROPT \
 			&
 
 		XAUTOLOCK_FILE="/tmp/.qtile_xautolock_$!"
 		touch $XAUTOLOCK_FILE
+
+		# disable for these
+		echo $HOSTNAME | grep '^CID[0-9]*' > /dev/null && xautolock -disable
 	)
 }
 
@@ -51,7 +53,7 @@ case `basename "$WINDOWMANAGER"` in
 	*)
 		echo $WINDOWMANAGER | grep '\<qtile\>' > /dev/null 2>&1 && {
 			start_screenlocker
-			(exec dunst&)
+			which dunst && (exec dunst&)
 		}
 		;;
 esac
