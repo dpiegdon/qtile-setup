@@ -1,0 +1,216 @@
+#!/bin/sh
+# vim: fdm=marker colorcolumn=80
+
+####################################################### Generic Helper Functions
+
+# returns all xinput device IDs of TYPE (pointer, keyboard) matching NAME
+device_ids() {
+	TYPE_MATCH="$1"
+	NAME_MATCH="$2"
+	NAME_MISMATCH="${3:-NEVERMATCHTHIS}"
+	xinput --list | grep ".*\[.*$TYPE_MATCH.*\].*" | grep "$NAME_MATCH" | grep -v "$NAME_MISMATCH" | sed -E 's/.*[\t ]id=([0-9]*)[\t ].*/\1/'
+}
+
+# enable device of given ID
+device_enable() {
+	ID="$1"
+	echo "$ID enable"
+	xinput set-prop "$ID" "Device Enabled" 1
+}
+
+# disable device of given ID
+device_disable() {
+	ID="$1"
+	echo "$ID disable"
+	xinput set-prop "$ID" "Device Enabled" 0
+}
+
+# swap buttons of device of given ID to left-handed 
+device_swap_buttons() {
+	ID="$1"
+	echo "$ID lefty"
+	xinput set-prop "$ID" "libinput Left Handed Enabled" 1
+}
+
+# enable button-scrolling mode for given ID, with BUTTON used for scoll-mode
+device_button_scrolling() {
+	ID="$1"
+	BUTTON="$2"
+	echo "$ID button-$BUTTON-scrolling"
+	xinput set-prop "$ID" "libinput Scroll Method Enabled" 0 0 1
+	xinput set-prop "$ID" "libinput Button Scrolling Button" $BUTTON
+}
+
+######################################################### Device Specific Setups
+
+# Wacom Bamboo device names to use
+wacom_defs() {
+	WACOM_DEV_FINGER=$(device_ids "" "Wacom Bamboo 2FG 4x5 Finger")
+	WACOM_DEV_PEN=$(device_ids "" "Wacom Bamboo 2FG 4x5 Pen")
+}
+
+# setup Wacom into default mode
+wacom_setup() {
+	wacom_defs
+	echo "Wacom reset"
+	xsetwacom --set "$WACOM_DEV_PEN" Mode Absolute
+	xsetwacom --set "$WACOM_DEV_PEN" TabletPCButton "on"
+	xsetwacom --set "$WACOM_DEV_PEN" Touch "off"
+}
+
+# toggle use of touchpad on Wacom
+wacom_toggle_touch() {
+	wacom_defs
+	STAT=`xsetwacom --get "$WACOM_DEV_FINGER" Touch`
+	if [ "$STAT" = "off" ]; then
+		xsetwacom --set "$WACOM_DEV_FINGER" Touch on
+		NEWSTAT="enabled"
+	else
+		xsetwacom --set "$WACOM_DEV_FINGER" Touch off
+		NEWSTAT="disabled"
+	fi;
+	echo "Wacom touch $NEWSTAT"
+}
+
+# switch Wacom between different pen modes
+wacom_switch_pen_screen() {
+	wacom_defs
+	PREV_SCREEN=`cat ~/.current_wacom_screen`
+	case "$PREV_SCREEN" in
+		desktop)
+			# go to RIGHT [NONE]
+			ROTATE=none
+			NEW_SCREEN=mid
+			SCREEN_DEVICE=$DISPLAYMIDDLE
+			;;
+		mid)
+			# go to LEFT [CCW]
+			ROTATE=ccw
+			NEW_SCREEN=left
+			SCREEN_DEVICE=$DISPLAYLEFT
+			;;
+		left)
+			# go to DESKTOP [NONE]
+			ROTATE=none
+			NEW_SCREEN=desktop
+			SCREEN_DEVICE=desktop
+			;;
+		*)
+			NEW_SCREEN=desktop
+			;;
+	esac;
+	echo "$NEW_SCREEN" > ~/.current_wacom_screen
+	echo "Wacom pen $NEW_SCREEN [$ROTATE]"
+	xsetwacom --set "$WACOM_DEV_PEN" Rotate "$ROTATE"
+	xsetwacom --set "$WACOM_DEV_PEN" MapToOutput "$SCREEN_DEVICE"
+	xsetwacom --set "$WACOM_DEV_FINGER" Rotate "$ROTATE"
+}
+
+# switch Wacom between relative and absolute mode
+wacom_toggle_relative() {
+	wacom_defs
+	case `xsetwacom --get "$WACOM_DEV_PEN" Mode` in
+		Absolute)
+			echo "Wacom relative"
+			xsetwacom --set "$WACOM_DEV_PEN" Mode Relative
+			;;
+		Relative)
+			echo "Wacom absolute"
+			xsetwacom --set "$WACOM_DEV_PEN" Mode Absolute
+			;;
+	esac;
+}
+
+# default trackball setup
+trackball_setup() {
+	IDS=$(device_ids "pointer" "Kensington Slimblade")
+	for ID in $IDS; do
+		# swap top and bottom buttons against RSI
+		xinput set-button-map "$ID" 2 1 8 4 5 6 7 3
+		device_button_scrolling "$ID" 3
+		# or not?
+		#device_button_scrolling "$ID" 8
+		# sensitivity
+		xinput set-prop "$ID" "libinput Accel Speed" .7
+		# button + motion scrolling:
+		xinput set-prop "$ID" "libinput Scroll Method Enabled" 0 0 1
+	done
+}
+
+# default left-hand ergonomic MOSART mouse
+lefty_mouse_setup() {
+	device_ids "pointer" "MOSART Semi. 2.4G Wireless Mouse" "Consumer Control" | while read ID; do
+		device_button_scrolling "$ID" 8
+	done
+
+	device_ids "pointer" "Logitech USB Optical Mouse" | while read ID; do
+		device_button_scrolling "$ID" 8
+	done
+}
+
+# default right-hand ergonomic mouse
+right_ergonomic_mouse() {
+	IDS=$(device_ids "pointer" "Nordic 2.4G Wireless Receiver")
+	for ID in $IDS; do
+		device_button_scrolling "$ID" 8
+	done
+	IDS=$(device_ids "keyboard" "Nordic 2.4G Wireless Receiver")
+	for ID in $IDS; do
+		device_disable "$ID"
+	done
+}
+
+# default apple trackpad, also restart libinput-gestures
+apple_magic_trackpad2() {
+	IDS=$(device_ids "pointer" "Apple Inc. Magic Trackpad 2")
+	for ID in $IDS; do
+		xinput set-prop "$ID" "libinput Accel Speed" .1
+	done
+	[ -z "$IDS" ] || libinput-gestures-setup restart
+}
+
+# laptop defaults
+laptop() {
+	IDS=$(device_ids "pointer" "SynPS/2 Synaptics TouchPad")
+	for ID in $IDS; do
+		device_enable "$ID"
+		y=1
+	done
+	IDS=$(device_ids "pointer" "Wacom Pen and multitouch sensor Pen stylus")
+	for ID in $IDS; do
+		xinput set-prop "$ID" "Wacom Hover Click" 0
+		y=1
+	done
+}
+
+# default keyboard settings, disable unneeded keyboards
+keyboard_setup() {
+	echo "Keyboard defaults"
+	if [ -e ~/.Xkbmap ]; then
+		setxkbmap `cat ~/.Xkbmap`
+	fi;
+
+	if [ -e ~/.Xmodmap ]; then
+		xmodmap ~/.Xmodmap
+	fi;
+
+	for BADKEYBOARD in "IguanaWorks" "LifeCam Studio" "Nordic 2.4G" "MOSART"; do
+		IDS=$(device_ids "keyboard" "$BADKEYBOARD")
+		for ID in $IDS; do
+			device_disable "$ID"
+		done
+	done
+}
+
+################################################################################
+
+if [ $# -eq 0 ]; then
+	echo "HID setup"
+	#wacom_setup
+	#trackball_setup
+	lefty_mouse_setup
+	right_ergonomic_mouse
+	apple_magic_trackpad2
+	laptop
+	keyboard_setup
+fi

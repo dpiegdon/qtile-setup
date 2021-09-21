@@ -8,7 +8,7 @@ xrdb ~/.Xdefaults
 # disable screensaver
 xset s off
 xset -dpms
-(~/bin/hid-reset &)
+(~/bin/hid-setup &)
 
 # check or pick display manager {{{
 
