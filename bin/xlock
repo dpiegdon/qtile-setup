@@ -7,7 +7,9 @@ pidof i3lock > /dev/null 2>&1 || {
 	else
 		xset dpms 30 30 30
 	fi
-	i3lock -t -n -i $HOME/.locked.png -f -c 000000
+	LOCKIMG="$HOME/.locked.png"
+	[ ! -e "$LOCKIMG" ] && LOCKIMG="$HOME/.qtile/locked.png"
+	i3lock -t -n -i "$LOCKIMG" -f -c 000000
 	xset -dpms
 	which xlock-postcommand > /dev/null 2>&1 && xlock-postcommand
 }
