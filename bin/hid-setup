@@ -154,9 +154,9 @@ right_ergonomic_mouse() {
 	for ID in $IDS; do
 		device_button_scrolling "$ID" 8
 	done
-	IDS=$(device_ids "keyboard" "Nordic 2.4G Wireless Receiver")
+	IDS=$(device_ids "pointer" "Compx Pulsar Xlite Wireless")
 	for ID in $IDS; do
-		device_disable "$ID"
+		device_button_scrolling "$ID" 8
 	done
 }
 
@@ -194,7 +194,7 @@ keyboard_setup() {
 		xmodmap ~/.Xmodmap
 	fi;
 
-	for BADKEYBOARD in "IguanaWorks" "LifeCam Studio" "Nordic 2.4G" "MOSART"; do
+	for BADKEYBOARD in "IguanaWorks" "LifeCam Studio" "Nordic 2.4G" "MOSART" "Compx Pulsar Xlite"; do
 		IDS=$(device_ids "keyboard" "$BADKEYBOARD")
 		for ID in $IDS; do
 			device_disable "$ID"
