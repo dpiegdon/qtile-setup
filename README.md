@@ -28,6 +28,7 @@ typical setup:
 		ln -s ~/.qtile/bin/displace ~/bin/
 		ln -s ~/.qtile/bin/xautolock-force ~/bin/
 		ln -s ~/.qtile/bin/hid-setup ~/bin/
+		ln -s ~/.qtile/bin/paste_to_qrcode ~/bin/
 		cd .qtile/qtile
 
 		# NOTE:

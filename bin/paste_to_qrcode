@@ -1,0 +1,4 @@
+#!/bin/sh
+# as seen at https://twitter.com/David3141593/status/1509457643206811652
+
+xclip -o -s c | qrencode -o - | feh --force-aliasing -ZF -

@@ -8,6 +8,7 @@ xrdb ~/.Xdefaults
 # disable screensaver
 xset s off
 xset -dpms
+xset -b	# disable bell (pcskr)
 (~/bin/hid-setup &)
 
 # check or pick display manager {{{

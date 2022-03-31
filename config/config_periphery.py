@@ -106,6 +106,8 @@ def get_keys_and_mouse(groups):
         Key(mod, "s",                  lazy.spawn("/usr/bin/gnome-screenshot")),
         Key(mod+shft, "s",             lazy.spawn("/usr/bin/gnome-screenshot --window")),
 
+        Key(mod, "v",                  lazy.spawn("paste_to_qrcode")),
+
         Key([], "XF86Display",         lazy.spawn("displace -af")),
     ]
 
