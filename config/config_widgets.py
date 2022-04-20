@@ -42,7 +42,6 @@ def init_widgets(theme, fontsize, iconsize):
             widget.WindowName(foreground=theme['text'], background=theme['rootwindow'], for_current_screen=True),
             widget.Prompt(foreground=theme['textprompt'],
                           cursor_color=theme['foreground'],
-                          cursor_style='block',
                           bell_style='visual',
                           visual_bell_time=0.1,
                           visual_bell_color='#ffffff',
