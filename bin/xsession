@@ -18,7 +18,7 @@ if [ -z "$WINDOWMANAGER" ]; then
 fi;
 
 if [ -z "$WINDOWMANAGER" ]; then
-	WINDOWMANAGER="python3 $HOME/.qtile/qtile/bin/qtile start -c $HOME/.qtile/config/config.py"
+	WINDOWMANAGER="$HOME/.qtile/qtile/bin/qtile start -c $HOME/.qtile/config/config.py"
 	# or one of:
 	#   /usr/bin/xterm
 	#   /usr/bin/startkde

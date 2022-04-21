@@ -171,11 +171,6 @@ def get_dirty_mem_M():
         return "E"
 
 
-@libqtile.hook.subscribe.screen_change
-def restart_on_randr(event):
-	libqtile.qtile.cmd_restart()
-
-
 @libqtile.hook.subscribe.client_new
 def float_dialogs(window):
     if(window.window.get_wm_type() == 'dialog'

@@ -34,6 +34,7 @@ bring_front_click = False
 cursor_warp = False
 auto_fullscreen = True
 focus_on_window_activation = "smart"
+reconfigure_screens = True
 
 groups = [Group(i) for i in "1234567890-="] + [
     ScratchPad("d", [DropDown("d", "/usr/bin/xterm -u8",
