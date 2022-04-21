@@ -69,12 +69,6 @@ fi
 
 # }}}
 
-# start pipewire, if it exists {{{
-
-which pipewire && pipewire &
-
-# }}}
-
 # host-specific session setup {{{
 
 [ -e $HOME/.qtile/config/local.xsession ] && $HOME/.qtile/config/local.xsession
