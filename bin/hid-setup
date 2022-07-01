@@ -174,12 +174,12 @@ laptop() {
 	IDS=$(device_ids "pointer" "SynPS/2 Synaptics TouchPad")
 	for ID in $IDS; do
 		device_enable "$ID"
-		y=1
+		# reduce touchpad sensitivity
+		xinput set-prop "$ID" "Device Accel Velocity Scaling" 8
 	done
 	IDS=$(device_ids "pointer" "Wacom Pen and multitouch sensor Pen stylus")
 	for ID in $IDS; do
 		xinput set-prop "$ID" "Wacom Hover Click" 0
-		y=1
 	done
 }
 
