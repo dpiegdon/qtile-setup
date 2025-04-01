@@ -1,3 +1,12 @@
+DEPRECATED !!! DEPRECATED !!! DEPRECATED !!! DEPRECATED
+=======================================================
+
+This is no longer in use! I switched to herbstluftwm.
+See https://github.com/dpiegdon/herbstluftwm-setup
+
+DEPRECATED !!! DEPRECATED !!! DEPRECATED !!! DEPRECATED
+=======================================================
+
 dependencies: (for debian)
 
 		i3lock
